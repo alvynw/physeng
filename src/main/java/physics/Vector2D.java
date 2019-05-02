@@ -1,4 +1,4 @@
-package vectors;
+package physics;
 
 public class Vector2D {
     private double x;

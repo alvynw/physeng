@@ -1,12 +1,15 @@
 package core;
 
-import vectors.Vector2D;
+import physics.Vector2D;
+
+import java.awt.*;
 
 class Entity {
     protected double mass;
     protected Vector2D position;
     protected Vector2D velocity;
     protected Vector2D acceleration;
+    protected Color color = Color.BLACK;
 
     public Entity(double mass, Vector2D position, Vector2D velocity, Vector2D acceleration) {
         this.mass = mass;
@@ -34,5 +37,9 @@ class Entity {
 
     public Vector2D getAcceleration() {
         return acceleration;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }
