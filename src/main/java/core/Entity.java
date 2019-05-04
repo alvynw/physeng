@@ -4,7 +4,7 @@ import physics.Vector2D;
 
 import java.awt.*;
 
-class Entity {
+public class Entity {
     protected double mass;
     protected Vector2D position;
     protected Vector2D velocity;
@@ -21,6 +21,15 @@ class Entity {
     public Entity(double mass, Vector2D position) {
         this.mass = mass;
         this.position = position;
+        this.velocity = new Vector2D(0,0);
+        acceleration = new Vector2D(0,0);
+    }
+
+    public Entity(double mass, Vector2D position, Vector2D velocity) {
+        this.mass = mass;
+        this.position = position;
+        this.velocity = velocity;
+        acceleration = new Vector2D(0,0);
     }
 
     public double getMass() {
@@ -41,5 +50,12 @@ class Entity {
 
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    public void setAcceleration(Vector2D acceleration){
+        this.acceleration=acceleration;
     }
 }
