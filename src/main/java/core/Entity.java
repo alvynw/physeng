@@ -3,6 +3,7 @@ package core;
 import physics.Vector2D;
 
 import java.awt.*;
+import java.awt.geom.Path2D;
 
 class Entity {
     protected double mass;
@@ -11,16 +12,24 @@ class Entity {
     protected Vector2D acceleration;
     protected Color color = Color.BLACK;
 
-    public Entity(double mass, Vector2D position, Vector2D velocity, Vector2D acceleration) {
+    private Path2D shape;
+
+    public Entity(double mass, Vector2D position, Vector2D velocity, Vector2D acceleration, Path2D shape) {
         this.mass = mass;
         this.position = position;
         this.velocity = velocity;
         this.acceleration = acceleration;
+        this.shape = shape;
     }
 
-    public Entity(double mass, Vector2D position) {
+    public Entity(double mass, Vector2D position, Path2D shape) {
         this.mass = mass;
         this.position = position;
+        this.shape = shape;
+    }
+
+    public Shape getShape() {
+        return shape;
     }
 
     public double getMass() {
