@@ -1,25 +1,76 @@
 package math;
 
 import java.awt.*;
+import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.Stack;
 
 public class ConvexHull {
 
-    public static Polygon getHull(Polygon p) {
-        return getHull(p.xpoints, p.ypoints, p.npoints);
+    public static Path2D getHull(Polygon p) {
+
+        int[] pxpoints = new int[p.npoints];
+        int[] pypoints = new int[p.npoints];
+
+        for (int i = 0; i < p.npoints; i++) {
+            pxpoints[i] = p.xpoints[i];
+            pypoints[i] = p.ypoints[i];
+        }
+
+        return getHull(pxpoints, pypoints, p.npoints);
     }
 
-    public static Polygon getHull(int[] xpoints, int[] ypoints, int npoints) {
-        if (npoints > xpoints.length || npoints > ypoints.length) {
-            throw new IllegalArgumentException("Not enough points in lists!");
+    public static Path2D getHull(int[] xpoints, int[] ypoints, int npoints) {
+
+        if (npoints != xpoints.length || npoints != ypoints.length) {
+            throw new IllegalArgumentException("npoints must be equal to the size of xpoints and ypoints");
+        }
+
+        double[] dxpoints = new double[npoints];
+        double[] dypoints = new double[npoints];
+
+        for (int i = 0; i < npoints; i++) {
+            dxpoints[i] = xpoints[i];
+            dypoints[i] = ypoints[i];
+        }
+
+        return getHull(dxpoints, dypoints, npoints);
+    }
+
+    public static Path2D getHull(int[][] points) {
+        int[] x = new int[points.length];
+        int[] y = new int[points.length];
+
+        for (int i = 0; i < points.length; i++) {
+            x[i] = points[i][0];
+            y[i] = points[i][1];
+        }
+        return getHull(x, y, points.length);
+    }
+
+    public static Path2D getHull(double[][] points) {
+        double[] x = new double[points.length];
+        double[] y = new double[points.length];
+
+        for (int i = 0; i < points.length; i++) {
+            x[i] = points[i][0];
+            y[i] = points[i][1];
+        }
+        return getHull(x, y, points.length);
+    }
+
+    public static Path2D getHull(double[] xpoints, double[] ypoints, int npoints) {
+
+        if (npoints != xpoints.length || npoints != ypoints.length) {
+            throw new IllegalArgumentException("npoints must be equal to the size of xpoints and ypoints");
         }
 
         if (npoints <= 2) {
-            throw new IllegalArgumentException("Must have over 2 points! Lines are not supported");
+            throw new IllegalArgumentException("Must have over 2 non-collinear points! Lines are not supported. To create a line," +
+                    "use a thin rectangle");
         }
 
-        int[][] list = new int[npoints][2];
+        double[][] list = new double[npoints][2];
 
         for (int i = 0; i < npoints; i++) {
             list[i][0] = xpoints[i];
@@ -30,19 +81,19 @@ public class ConvexHull {
 
     }
 
-    private static Polygon hull(int[][] list) {
+    private static Path2D hull(double[][] list) {
 
 
         //find lowest in list
 
-        int[] lowest = list[0];
+        double[] lowest = list[0];
         for (int i = 1; i < list.length; i++) {
             if (list[i][1] < lowest[1]) {
                 lowest = list[1];
             }
         }
 
-        int[] finalLowest = lowest;
+        double[] finalLowest = lowest;
 
         Arrays.sort(list, (o1, o2) -> {
             double differenceInAngle = Math.cos(Math.atan2(o1[1] - finalLowest[1], o1[0] - finalLowest[0])) -
@@ -52,16 +103,16 @@ public class ConvexHull {
             return 0;
         });
 
-        Stack<int[]> stack = new Stack<>();
+        Stack<double[]> stack = new Stack<>();
 
         stack.push(list[0]);
         stack.push(list[1]);
 
         for (int i = 2; i <= list.length; i++) {
-            int[] p = stack.pop();
-            int[] pp = stack.pop();
+            double[] p = stack.pop();
+            double[] pp = stack.pop();
 
-            int[] curr;
+            double[] curr;
             if (i == list.length) {
                 curr = list[0];
             } else {
@@ -82,14 +133,25 @@ public class ConvexHull {
             }
         }
 
-        Polygon p = new Polygon();
-
-        for (int[] e : stack) {
-            p.addPoint(e[0], e[1]);
+        if (stack.size() < 3) {
+            throw new IllegalArgumentException("Must have over 2 non-collinear points! Lines are not supported. To create a line," +
+                    "use a thin rectangle");
         }
 
-        return p;
+        Path2D path = new Path2D.Double();
 
+        double[] origin = stack.pop();
+
+        path.moveTo(origin[0], origin[1]);
+
+        while(stack.size() > 1) {
+            double[] e = stack.pop();
+            path.lineTo(e[0], e[1]);
+        }
+
+        path.closePath();
+
+        return path;
     }
 
 }

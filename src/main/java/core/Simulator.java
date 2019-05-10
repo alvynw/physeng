@@ -44,28 +44,9 @@ public class Simulator extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        super.paintComponent(g);
-
-        g.setColor(Color.RED);
-        g.drawLine(100 + x, 100, 200, 200);
-        g.setColor(Color.CYAN);
-        for(int i = 0; i < 10; i++) {
-            g.fillOval(50 + i * x, 50 + i * y, 50, 50);
-        }
-        g.setColor(Color.MAGENTA);
-        for(int j = 0; j< 10; j++)
-        {
-            g.fillOval(900 - j*x, 50 + j*y, 50, 50);
-        }
+        super.paintComponent(g2d);
 
 
-        for(int i = 0; i < entities.size(); i++) {
-            Entity entity = entities.get(i);
-            //if() sees what shape the entity is. if circle,
-            //g2d.fillOval(entity.getPosition().getX(), 50, 50, 50);
-            //use pathIterator
-            g2d.draw();
-        }
     }
 }
 
