@@ -3,7 +3,7 @@ package core;
 import physics.Vector2D;
 import java.awt.*;
 
-public class Circle extends BoundedEntity {
+public class Circle extends Entity {
     private double radius;
     private int[] xPoints;
     private int[] yPoints;

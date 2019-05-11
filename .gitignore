@@ -146,6 +146,8 @@ cmake-build-*/
 
 # IntelliJ
 
+*.iml
+
 .idea/
 
 out/
