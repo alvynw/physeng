@@ -1,7 +1,8 @@
 package core;
 
 import physics.Vector2D;
-
+import physics.Force;
+import java.util.ArrayList;
 import java.awt.*;
 import java.awt.geom.Path2D;
 
@@ -28,6 +29,7 @@ public class Entity {
 
     public Entity(double mass, double[] xpoints, double[] ypoints) {
         this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
+
     }
 
     public Path2D getShape() { return shape; }
@@ -51,7 +53,6 @@ public class Entity {
     public Color getColor() {
         return color;
     }
-
     public void setColor(Color color) { this.color = color; }
 
     public void setInitialVelocity(Vector2D velocity) { this.velocity = velocity; }
@@ -59,4 +60,5 @@ public class Entity {
     public void setInitialPosition(Vector2D position) { this.position = position; }
 
     public void setInitialAcceleration(Vector2D acceleration) { this.acceleration = acceleration; }
+
 }
