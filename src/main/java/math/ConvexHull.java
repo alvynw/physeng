@@ -2,61 +2,17 @@ package math;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
+import static utils.Path2DUtils.pathVertices;
+
 public class ConvexHull {
 
-    public static Path2D getHull(Polygon p) {
-
-        int[] pxpoints = new int[p.npoints];
-        int[] pypoints = new int[p.npoints];
-
-        for (int i = 0; i < p.npoints; i++) {
-            pxpoints[i] = p.xpoints[i];
-            pypoints[i] = p.ypoints[i];
-        }
-
-        return getHull(pxpoints, pypoints, p.npoints);
-    }
-
-    public static Path2D getHull(int[] xpoints, int[] ypoints, int npoints) {
-
-        if (npoints != xpoints.length || npoints != ypoints.length) {
-            throw new IllegalArgumentException("npoints must be equal to the size of xpoints and ypoints");
-        }
-
-        double[] dxpoints = new double[npoints];
-        double[] dypoints = new double[npoints];
-
-        for (int i = 0; i < npoints; i++) {
-            dxpoints[i] = xpoints[i];
-            dypoints[i] = ypoints[i];
-        }
-
-        return getHull(dxpoints, dypoints, npoints);
-    }
-
-    public static Path2D getHull(int[][] points) {
-        int[] x = new int[points.length];
-        int[] y = new int[points.length];
-
-        for (int i = 0; i < points.length; i++) {
-            x[i] = points[i][0];
-            y[i] = points[i][1];
-        }
-        return getHull(x, y, points.length);
-    }
-
-    public static Path2D getHull(double[][] points) {
-        double[] x = new double[points.length];
-        double[] y = new double[points.length];
-
-        for (int i = 0; i < points.length; i++) {
-            x[i] = points[i][0];
-            y[i] = points[i][1];
-        }
-        return getHull(x, y, points.length);
+    public static Path2D getHull(Path2D path) {
+        return hull(pathVertices(path));
     }
 
     public static Path2D getHull(double[] xpoints, double[] ypoints, int npoints) {
@@ -78,11 +34,61 @@ public class ConvexHull {
         }
 
         return hull(list);
+    }
 
+    public static Path2D getHull(int[] xpoints, int[] ypoints, int npoints) {
+
+        if (npoints != xpoints.length || npoints != ypoints.length) {
+            throw new IllegalArgumentException("npoints must be equal to the size of xpoints and ypoints");
+        }
+
+        double[] dxpoints = new double[npoints];
+        double[] dypoints = new double[npoints];
+
+        for (int i = 0; i < npoints; i++) {
+            dxpoints[i] = xpoints[i];
+            dypoints[i] = ypoints[i];
+        }
+
+        return getHull(dxpoints, dypoints, npoints);
+    }
+
+    public static Path2D getHull(double[][] points) {
+        double[] x = new double[points.length];
+        double[] y = new double[points.length];
+
+        for (int i = 0; i < points.length; i++) {
+            x[i] = points[i][0];
+            y[i] = points[i][1];
+        }
+        return getHull(x, y, points.length);
+    }
+
+    public static Path2D getHull(int[][] points) {
+        int[] x = new int[points.length];
+        int[] y = new int[points.length];
+
+        for (int i = 0; i < points.length; i++) {
+            x[i] = points[i][0];
+            y[i] = points[i][1];
+        }
+        return getHull(x, y, points.length);
+    }
+
+    public static Path2D getHull(Polygon p) {
+
+        int[] pxpoints = new int[p.npoints];
+        int[] pypoints = new int[p.npoints];
+
+        for (int i = 0; i < p.npoints; i++) {
+            pxpoints[i] = p.xpoints[i];
+            pypoints[i] = p.ypoints[i];
+        }
+
+        return getHull(pxpoints, pypoints, p.npoints);
     }
 
     private static Path2D hull(double[][] list) {
-
 
         //find lowest in list
 
