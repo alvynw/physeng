@@ -2,30 +2,30 @@ package physics;
 
 import core.*;
 
-public class FollowingForce extends Vector2D implements funcInterface{
-    funcInterface fEquation;
-    static Vector2D force;
+import java.util.ArrayList;
+import java.util.function.Function;
+
+public class FollowingForce<Input> {
+    Function<Input, Vector2D> function;
     //static Entity followingEntity;
-    public FollowingForce(funcInterface equation){
-        fEquation = equation;
+    public FollowingForce(Function<Input, Vector2D> function){
+        this.function = function;
     }
-    public FollowingForce(Vector2D force){
-        this.force = force;
+
+    public Vector2D query(Input input) {
+        return function.apply(input);
     }
-       public void updateForce(double x, double v, double a, double t){
-        fEquation.updateForce(x , v,t,a);
-        }
+
     public static void main(String args[]){
 
         Entity obj = new Entity(10, null);
         obj.setInitialPosition(new Vector2D(10, 10));
 
-        FollowingForce f = new FollowingForce((double t, double a, double x, double v)->{
-            force = new Vector2D( t*a, 4 * t+v+x);
-        });
-        f.updateForce(obj.getPosition().getMag(),obj.getVelocity().getMag(),obj.getAcceleration().getMag(),15);
-        System.out.println(force.getMag());
+        ArrayList<Double> list = new ArrayList<>();
+        list.add(1.0);
+        list.add(2.0);
 
+        FollowingForce<ArrayList<Double>> f = new FollowingForce<ArrayList<Double>>((ArrayList<Double> list2) -> new Vector2D(list2.get(0), list2.get(1)));
 
         // This calls above lambda expression and prints 10.
     }
