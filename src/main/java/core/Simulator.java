@@ -33,8 +33,6 @@ public class Simulator extends JPanel {
             //((Timer) actionEvent.getSource()).start();
         });
 
-
-
         timer.start();
         repaint();
     }

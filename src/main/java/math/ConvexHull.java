@@ -1,14 +1,24 @@
 package math;
 
+import physics.Vector2D;
+
 import java.awt.*;
 import java.awt.geom.Path2D;
-import java.awt.geom.PathIterator;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
 import static utils.Path2DUtils.pathVertices;
 
+/**
+ * Implementation of the Graham scan to find the convex hull of a set of points.
+ * Methods have been overloaded to support a variety of inputs.
+ *
+ * This implementation of the Graham scan iterates counterclockwise. The path returned is also the counterclockwise path.
+ * In other words, the path returned starts at the bottom most, left most point, and traverses along the convex hull in
+ * a counterclockwise loop.
+ *
+ * Time complexity: O(n)
+ */
 public class ConvexHull {
 
     public static Path2D getHull(Path2D path) {
@@ -26,15 +36,25 @@ public class ConvexHull {
                     "use a thin rectangle");
         }
 
-        double[][] list = new double[npoints][2];
+        Vector2D[] list = new Vector2D[npoints];
 
         for (int i = 0; i < npoints; i++) {
-            list[i][0] = xpoints[i];
-            list[i][1] = ypoints[i];
+            list[i] = new Vector2D(xpoints[i], ypoints[i]);
         }
 
         return hull(list);
     }
+
+    public static Path2D gethUll(Vector2D[] points) {
+        double[][] t = new double[points.length][2];
+
+        for (int i = 0; i < points.length; i++) {
+            t[i] = points[i].toArray();
+        }
+
+        return getHull(t);
+    }
+
 
     public static Path2D getHull(int[] xpoints, int[] ypoints, int npoints) {
 
@@ -88,37 +108,37 @@ public class ConvexHull {
         return getHull(pxpoints, pypoints, p.npoints);
     }
 
-    private static Path2D hull(double[][] list) {
+    private static Path2D hull(Vector2D[] list) {
 
         //find lowest in list
 
-        double[] lowest = list[0];
+        Vector2D lowest = list[0];
         for (int i = 1; i < list.length; i++) {
-            if (list[i][1] < lowest[1]) {
+            if (list[i].getY() < lowest.getY()) {
                 lowest = list[1];
             }
         }
 
-        double[] finalLowest = lowest;
+        Vector2D finalLowest = lowest;
 
-        Arrays.sort(list, (o1, o2) -> {
-            double differenceInAngle = Math.cos(Math.atan2(o1[1] - finalLowest[1], o1[0] - finalLowest[0])) -
-                    Math.cos(Math.atan2(o2[1] - finalLowest[1], o2[0] - finalLowest[0]));
+        Arrays.sort(list, (vector1, vector2) -> {
+            double differenceInAngle = Math.cos(Math.atan2(vector1.getY() - finalLowest.getY(), vector1.getX() - finalLowest.getX())) -
+                    Math.cos(Math.atan2(vector2.getY() - finalLowest.getY(), vector2.getX() - finalLowest.getX()));
             if (differenceInAngle > 0) return -1;
             if (differenceInAngle < 0) return 1;
             return 0;
         });
 
-        Stack<double[]> stack = new Stack<>();
+        Stack<Vector2D> stack = new Stack<>();
 
         stack.push(list[0]);
         stack.push(list[1]);
 
         for (int i = 2; i <= list.length; i++) {
-            double[] p = stack.pop();
-            double[] pp = stack.pop();
+            Vector2D p = stack.pop();
+            Vector2D pp = stack.pop();
 
-            double[] curr;
+            Vector2D curr;
             if (i == list.length) {
                 curr = list[0];
             } else {
@@ -126,8 +146,8 @@ public class ConvexHull {
             }
 
 
-            double degreesTurnedLeft = (Math.atan2(p[1] - pp[1], p[0] - pp[0]) + 2 * Math.PI) % (2 * Math.PI) + Math.PI -
-                    (Math.atan2(curr[1] - p[1], curr[0] - p[0]) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+            double degreesTurnedLeft = (Math.atan2(p.getY() - pp.getY(), p.getX() - pp.getX()) + 2 * Math.PI) % (2 * Math.PI) + Math.PI -
+                    (Math.atan2(curr.getY() - p.getY(), curr.getX() - p.getX()) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
 
             if (degreesTurnedLeft < Math.PI) {
                 stack.push(pp);
@@ -144,15 +164,22 @@ public class ConvexHull {
                     "use a thin rectangle");
         }
 
+        Stack<Vector2D> reverse = new Stack<>();
+
+        while (!stack.isEmpty()) {
+            reverse.push(stack.pop());
+        }
+
+
         Path2D path = new Path2D.Double();
 
-        double[] origin = stack.pop();
+        Vector2D origin = reverse.pop();
 
-        path.moveTo(origin[0], origin[1]);
+        path.moveTo(origin.getX(), origin.getY());
 
-        while(stack.size() > 1) {
-            double[] e = stack.pop();
-            path.lineTo(e[0], e[1]);
+        while(reverse.size() > 1) {
+            Vector2D e = reverse.pop();
+            path.lineTo(e.getX(), e.getY());
         }
 
         path.closePath();

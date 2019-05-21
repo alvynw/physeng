@@ -3,16 +3,21 @@ package core;
 import physics.Vector2D;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 
 import static java.lang.Math.random;
 import static math.ConvexHull.getHull;
+import static physics.CenterOfMass.uniformCOM;
+import static utils.Path2DUtils.pathVertices;
+import static utils.Path2DUtils.shift;
 
 class Entity {
     protected double mass;
     protected Vector2D position;
     protected Vector2D velocity;
     protected Vector2D acceleration;
+    protected double degree = 0;
     protected Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
 
     private Path2D shape;
@@ -22,7 +27,10 @@ class Entity {
         this.position = new Vector2D(0, 0);
         this.velocity = new Vector2D(0, 0);
         this.acceleration = new Vector2D(0, 0);
-        this.shape = getHull(shape);
+
+        Path2D shape1 = getHull(shape);
+
+        this.shape = shift(shape1, uniformCOM(shape1).opposite());
     }
 
     public Entity(double mass, double[] xpoints, double[] ypoints) {
@@ -74,4 +82,15 @@ class Entity {
     public void setInitialPosition(Vector2D position) { this.position = position; }
 
     public void setInitialAcceleration(Vector2D acceleration) { this.acceleration = acceleration; }
+
+    //ccw
+    public void rotate(double degree) {
+        this.degree += degree;
+        this.degree %= 360;
+
+        AffineTransform transform = new AffineTransform();
+        transform.rotate(degree);
+
+        shape.transform(transform);
+    }
 }
