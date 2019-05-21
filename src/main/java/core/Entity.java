@@ -1,8 +1,8 @@
 package core;
 
+import physics.FollowingForce;
 import physics.Vector2D;
-import physics.Force;
-import java.util.ArrayList;
+
 import java.awt.*;
 import java.awt.geom.Path2D;
 
@@ -29,6 +29,10 @@ public class Entity {
 
     public Entity(double mass, double[] xpoints, double[] ypoints) {
         this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
+
+    }
+
+    public void addFollowingForce(FollowingForce force) {
 
     }
 
@@ -61,4 +65,11 @@ public class Entity {
 
     public void setInitialAcceleration(Vector2D acceleration) { this.acceleration = acceleration; }
 
+
+//    public static void main (String[] args) {
+//        Entity entity = new Entity(10, null);
+//
+//        entity.addFollowingForce(new FollowingForce((double t) -> new Vector2D(t*t, t*t);));
+//
+//    }
 }
