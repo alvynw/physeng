@@ -31,10 +31,10 @@ public class Simulator extends JPanel {
         Path2D path = new Path2D.Double();
 
         path.moveTo(0, 0);
-        path.lineTo(100,0);
+        path.lineTo(100, 0);
         path.lineTo(100, 200);
         path.lineTo(50, 100);
-        path.lineTo(0,200);
+        path.lineTo(0, 200);
         path.closePath();
 
         entities.add(new Entity(10, path));
@@ -44,21 +44,19 @@ public class Simulator extends JPanel {
 
         Timer timer = new Timer(33, (ActionEvent actionEvent) -> {
             x += 1;
-            y+=1;
+            y += 1;
             repaint();
             //((Timer) actionEvent.getSource()).start();
         });
-
-
 
         timer.start();
         repaint();
     }
 
-    public void rotation()
-    {
+    public void rotation() {
         //use transform method from Path2D
     }
+
     @Override
     public void paintComponent(Graphics g) {
 
@@ -68,12 +66,10 @@ public class Simulator extends JPanel {
 
         g2d.draw(new Ellipse2D.Double(100, 100, 250, 250));
 
-        for(int i = 0; i < entities.size(); i++)
-        {
+        for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
 
-            if (entity instanceof Circle)
-            {
+            if (entity instanceof Circle) {
                 Circle circle = (Circle) entity;
                 g2d.draw(new Ellipse2D.Double(circle.getPosition().getX(), circle.getPosition().getY(), 250, 250));
             }
@@ -84,8 +80,7 @@ public class Simulator extends JPanel {
                 g2d.draw(new Rectangle2D.Double(entity.getPosition().getX(), 50.5, 200, 200));
             }*/
 
-            else
-            {
+            else {
                 g2d.draw(entity.getShape());
 
             }
@@ -110,18 +105,15 @@ public class Simulator extends JPanel {
             }*/
 
 
-
-
-           // g2d.draw(new Rectangle2D.Double(entity.getPosition().getX(), 50.5, 200, 200));
-          //  g2d.draw(new Arc2D.Double(entity.getPosition().getX(), entity.getPosition().getY(),
-                  //  50.5, 50.5, 20.0, 20.0, 20));
+            // g2d.draw(new Rectangle2D.Double(entity.getPosition().getX(), 50.5, 200, 200));
+            //  g2d.draw(new Arc2D.Double(entity.getPosition().getX(), entity.getPosition().getY(),
+            //  50.5, 50.5, 20.0, 20.0, 20));
 
 
             //if() sees what shape the entity is. if circle,
-           // g2d.draw(entity.getPosition().getX(), 50, 50, 50);
+            // g2d.draw(entity.getPosition().getX(), 50, 50, 50);
             //use pathIterator
 
         }
     }
 }
-
