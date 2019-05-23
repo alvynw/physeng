@@ -8,7 +8,7 @@ import java.awt.geom.Path2D;
 import static java.lang.Math.random;
 import static math.ConvexHull.getHull;
 
-class Entity {
+public class Entity {
     protected double mass;
     protected Vector2D position;
     protected Vector2D velocity;
