@@ -11,9 +11,13 @@ import static utils.Path2DUtils.pathVertices;
 
 public class CollisionDetector {
 
-//    public static LinkedList<>
-//
-//    public Set<Pair<Entity, Entity>> findPossibleCollisions(ArrayList<Entity> list) {
-//
-//    }
+    public static LinkedList<>
+
+    public Set<Pair<Entity, Entity>> findPossibleCollisions(ArrayList<Entity> list) {
+
+    }
+
+    private
+
+
 }

@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Path2D;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,6 +23,17 @@ public class Simulator extends JPanel {
         this.width = width;
         this.height = height;
         this.entities = entities;
+
+        Path2D path = new Path2D.Double();
+
+        path.moveTo(0,0);
+        path.lineTo(100,  0);
+        path.lineTo(100, 200);
+        path.lineTo(50, 100);
+        path.lineTo(0, 200);
+        path.closePath();
+
+        entities.add(new Entity(10, path));
 
         setSize(width, height);
         setVisible(true);
@@ -43,6 +55,11 @@ public class Simulator extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         super.paintComponent(g2d);
+
+
+        for (Entity e : entities) {
+            g2d.draw(e.getShape());
+        }
 
 
     }

@@ -11,7 +11,7 @@ import static utils.Path2DUtils.pathVertices;
 
 public class EntityTest {
 
-    final double TOLERANCE = 0.00001;
+    final double TOLERANCE = 0.001;
 
     @Test
     public void rotationTest() {
@@ -36,8 +36,18 @@ public class EntityTest {
         Vector2D[] expected = {new Vector2D(-1, -1), new Vector2D(1, -1), new Vector2D(1, 1),  new Vector2D(-1, 1)};
 
         for (int i = 0; i < path.length; i++) {
-            System.out.println(i);
             assertVector2DEquals(path[i], expected[i], TOLERANCE);
         }
+
+        e.rotate(45);
+
+        path = pathVertices(e.getShape());
+
+        Vector2D[] expectedRotation = {new Vector2D(0, -1.414214), new Vector2D(1.414214, 0), new Vector2D(0, 1.414214), new Vector2D(-1.414214, 0)};
+
+        for (int i = 0; i < path.length; i++) {
+            assertVector2DEquals(path[i], expectedRotation[i], TOLERANCE);
+        }
+
     }
 }

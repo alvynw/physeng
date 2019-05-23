@@ -5,13 +5,21 @@ import physics.Vector2D;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 
 import static java.lang.Math.random;
+import static jdk.nashorn.internal.objects.NativeMath.max;
+import static jdk.nashorn.internal.objects.NativeMath.min;
 import static math.ConvexHull.getHull;
 import static physics.CenterOfMass.uniformCOM;
 import static utils.Path2DUtils.pathVertices;
 import static utils.Path2DUtils.shift;
 
+/**
+ * Class representing anything in an `Environment`
+ *
+ * @see Environment
+ */
 class Entity {
     protected double mass;
     protected Vector2D position;
@@ -83,13 +91,34 @@ class Entity {
 
     public void setInitialAcceleration(Vector2D acceleration) { this.acceleration = acceleration; }
 
+    /**
+     * Returns the axis aligned bounding box of the shape of this entity
+     * @return the axis aligned bounding box of the shape of this entity
+     */
+    public Rectangle2D AABB() {
+
+        double minX = 0;
+        double maxX = 0;
+        double minY = 0;
+        double maxY = 0;
+
+        for (Vector2D vertex : pathVertices(shape)) {
+            minX = min(vertex, minX);
+            maxX = max(vertex, maxX);
+            minY = min(vertex, minY);
+            maxY = max(vertex, maxY);
+        }
+
+        return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+    }
+
     //ccw
     public void rotate(double degree) {
         this.degree += degree;
         this.degree %= 360;
 
         AffineTransform transform = new AffineTransform();
-        transform.rotate(degree);
+        transform.rotate(degree * Math.PI / 180);
 
         shape.transform(transform);
     }
