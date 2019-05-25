@@ -4,16 +4,31 @@ import physics.FollowingForce;
 import physics.Vector2D;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
 
 import static java.lang.Math.random;
+import static jdk.nashorn.internal.objects.NativeMath.max;
+import static jdk.nashorn.internal.objects.NativeMath.min;
 import static math.ConvexHull.getHull;
 
-public class Entity {
+import static physics.CenterOfMass.uniformCOM;
+import static utils.Path2DUtils.pathVertices;
+import static utils.Path2DUtils.shift;
+
+/**
+ * Class representing anything in an `Environment`
+ *
+ * @see Environment
+ */
+class Entity {
+
     protected double mass;
     protected Vector2D position;
     protected Vector2D velocity;
     protected Vector2D acceleration;
+    protected double degree = 0;
     protected Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
 
     private Path2D shape;
@@ -23,7 +38,10 @@ public class Entity {
         this.position = new Vector2D(0, 0);
         this.velocity = new Vector2D(0, 0);
         this.acceleration = new Vector2D(0, 0);
-        this.shape = shape;
+
+        Path2D shape1 = getHull(shape);
+
+        this.shape = shift(shape1, uniformCOM(shape1).opposite());
     }
 
 
@@ -34,6 +52,22 @@ public class Entity {
 
     public void addFollowingForce(FollowingForce force) {
 
+    }
+
+    public Entity(double mass, int[] xpoints, int[] ypoints) {
+        this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
+    }
+
+    public Entity(double mass, double[][] points) {
+        this(mass, getHull(points));
+    }
+
+    public Entity(double mass, int[][] points) {
+        this(mass, getHull(points));
+    }
+
+    public Entity(double mass, Polygon p) {
+        this(mass, getHull(p));
     }
 
     public Path2D getShape() { return shape; }
@@ -66,10 +100,34 @@ public class Entity {
     public void setInitialAcceleration(Vector2D acceleration) { this.acceleration = acceleration; }
 
 
-//    public static void main (String[] args) {
-//        Entity entity = new Entity(10, null);
-//
-//        entity.addFollowingForce(new FollowingForce((double t) -> new Vector2D(t*t, t*t);));
-//
-//    }
-}
+    /**
+     * Returns the axis aligned bounding box of the shape of this entity
+     * @return the axis aligned bounding box of the shape of this entity
+     */
+    public Rectangle2D AABB() {
+
+        double minX = 0;
+        double maxX = 0;
+        double minY = 0;
+        double maxY = 0;
+
+        for (Vector2D vertex : pathVertices(shape)) {
+            minX = min(vertex, minX);
+            maxX = max(vertex, maxX);
+            minY = min(vertex, minY);
+            maxY = max(vertex, maxY);
+        }
+
+        return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    //ccw
+    public void rotate(double degree) {
+        this.degree += degree;
+        this.degree %= 360;
+
+        AffineTransform transform = new AffineTransform();
+        transform.rotate(degree * Math.PI / 180);
+
+        shape.transform(transform);
+    }}
