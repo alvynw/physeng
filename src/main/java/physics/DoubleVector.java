@@ -12,15 +12,9 @@ public class DoubleVector {
         return time;
     }
 
-    public void setTime(double time) {
-        this.time = time;
-    }
 
     public Vector2D getVector() {
         return vector;
     }
 
-    public void setVector(Vector2D vector) {
-        this.vector = vector;
-    }
 }
