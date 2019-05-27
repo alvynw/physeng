@@ -3,17 +3,15 @@ package physics;
 public class Vector2D {
     private double x;
     private double y;
-    private double mag;
 
     public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
-        this.mag = Math.sqrt(x * x + y * y);
     }
+
     public Vector2D() {
         x = 0;
         y = 0;
-        mag = 0;
     }
 
     public double getX() {
@@ -25,7 +23,7 @@ public class Vector2D {
     }
 
     public double getMag() {
-        return mag;
+        return Math.sqrt(x * x + y * y);
     }
 
     public Vector2D add(Vector2D that) {
@@ -44,5 +42,25 @@ public class Vector2D {
 
     public double dot(Vector2D that) {
         return this.x * that.x + this.y * that.y;
+    }
+
+    public Vector2D normalLeft() {
+        return new Vector2D(-y, x);
+    }
+    public Vector2D normalRight() {
+        return new Vector2D(y, -x);
+    }
+
+    public Vector2D opposite() {
+        return new Vector2D(-x, -y);
+    }
+
+    public double[]toArray() {
+        double[] t = {x, y};
+        return t;
+    }
+
+    public String toString() {
+        return "[" + x + ", " + y + "]";
     }
 }
