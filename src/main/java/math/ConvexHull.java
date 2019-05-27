@@ -19,6 +19,7 @@ import static utils.Path2DUtils.pathVertices;
  *
  * Time complexity: O(n)
  */
+
 public class ConvexHull {
 
     public static Path2D getHull(Path2D path) {
@@ -114,7 +115,6 @@ public class ConvexHull {
             throw new IllegalArgumentException("Must have over 2 non-collinear points! Lines are not supported. To create a line," +
                     "use a thin rectangle");
         }
-
 
         //find lowest in list
 

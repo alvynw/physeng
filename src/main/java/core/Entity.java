@@ -1,11 +1,13 @@
 package core;
 
+import physics.FollowingForce;
 import physics.Vector2D;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 import static java.lang.Math.random;
 import static java.lang.Math.max;
@@ -23,12 +25,13 @@ import static utils.Path2DUtils.shift;
 
 public class Entity {
 
-    protected double mass;
-    protected Vector2D position;
-    protected Vector2D velocity;
-    protected Vector2D acceleration;
-    protected double degree = 0;
-    protected Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
+public class Entity {
+    private double mass;
+    private Vector2D position;
+    private Vector2D velocity;
+    private Vector2D acceleration;
+    private Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
+    private ArrayList<FollowingForce> followingForces = new ArrayList<>();
 
     private Path2D shape;
 
@@ -37,14 +40,33 @@ public class Entity {
         this.position = new Vector2D(0, 0);
         this.velocity = new Vector2D(0, 0);
         this.acceleration = new Vector2D(0, 0);
-
         Path2D shape1 = getHull(shape);
-
         this.shape = shift(shape1, uniformCOM(shape1).opposite());
     }
 
     public Entity(double mass, double[] xpoints, double[] ypoints) {
         this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
+
+    }
+
+    public void addFollowingForce(FollowingForce force) {
+        followingForces.add(force);
+    }
+
+    public Entity(double mass, int[] xpoints, int[] ypoints) {
+        this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
+    }
+
+    public Entity(double mass, double[][] points) {
+        this(mass, getHull(points));
+    }
+
+    public Entity(double mass, int[][] points) {
+        this(mass, getHull(points));
+    }
+
+    public Entity(double mass, Polygon p) {
+        this(mass, getHull(p));
     }
 
     public Entity(double mass, int[] xpoints, int[] ypoints) {
@@ -88,7 +110,6 @@ public class Entity {
     public Color getColor() {
         return color;
     }
-
     public void setColor(Color color) { this.color = color; }
 
     public void setInitialVelocity(Vector2D velocity) { this.velocity = velocity; }

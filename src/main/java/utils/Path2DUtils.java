@@ -1,15 +1,14 @@
 package utils;
 
 import physics.Vector2D;
-
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 
 public class Path2DUtils {
+  s
     public static Vector2D[] pathVertices(Path2D path) {
         ArrayList<double[]> list = new ArrayList<>();
-
         double[] currentSegData = new double[6];
 
         for (PathIterator iterator = path.getPathIterator(null); !iterator.isDone(); iterator.next()) {

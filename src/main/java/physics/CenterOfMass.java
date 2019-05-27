@@ -94,6 +94,7 @@ public class CenterOfMass {
     }
 
     private static Vector2D com(Vector2D[] points) {
+      
         double sumX = 0;
         double sumY = 0;
 
