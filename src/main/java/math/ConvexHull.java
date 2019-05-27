@@ -121,7 +121,7 @@ public class ConvexHull {
         Vector2D lowest = list[0];
         for (int i = 1; i < list.length; i++) {
             if (list[i].getY() < lowest.getY()) {
-                lowest = list[1];
+                lowest = list[i];
             }
         }
 
