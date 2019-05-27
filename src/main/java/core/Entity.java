@@ -8,8 +8,8 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 import static java.lang.Math.random;
-import static jdk.nashorn.internal.objects.NativeMath.max;
-import static jdk.nashorn.internal.objects.NativeMath.min;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static math.ConvexHull.getHull;
 import static physics.CenterOfMass.uniformCOM;
 import static utils.Path2DUtils.pathVertices;
@@ -109,10 +109,10 @@ public class Entity {
         double maxY = 0;
 
         for (Vector2D vertex : pathVertices(shape)) {
-            minX = min(vertex, minX);
-            maxX = max(vertex, maxX);
-            minY = min(vertex, minY);
-            maxY = max(vertex, maxY);
+            minX = min(vertex.getX(), minX);
+            maxX = max(vertex.getX(), maxX);
+            minY = min(vertex.getY(), minY);
+            maxY = max(vertex.getY(), maxY);
         }
 
         return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);

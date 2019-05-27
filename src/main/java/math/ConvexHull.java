@@ -110,6 +110,12 @@ public class ConvexHull {
 
     private static Path2D hull(Vector2D[] list) {
 
+        if (list.length <= 2) {
+            throw new IllegalArgumentException("Must have over 2 non-collinear points! Lines are not supported. To create a line," +
+                    "use a thin rectangle");
+        }
+
+
         //find lowest in list
 
         Vector2D lowest = list[0];
