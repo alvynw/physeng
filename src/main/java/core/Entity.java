@@ -8,8 +8,8 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 import static java.lang.Math.random;
-import static jdk.nashorn.internal.objects.NativeMath.max;
-import static jdk.nashorn.internal.objects.NativeMath.min;
+import static java.lang.Math.min;
+import static java.lang.Math.max;
 import static math.ConvexHull.getHull;
 import static physics.CenterOfMass.uniformCOM;
 import static utils.Path2DUtils.pathVertices;
@@ -17,19 +17,48 @@ import static utils.Path2DUtils.shift;
 
 /**
  * Class representing anything in an `Environment`
+ * All entities are assumed to be uniform in density.
+ * The bounding shape of entities is automatically converted to its convex hull.
  *
  * @see Environment
  */
-class Entity {
-    protected double mass;
-    protected Vector2D position;
-    protected Vector2D velocity;
-    protected Vector2D acceleration;
-    protected double degree = 0;
-    protected Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
+public class Entity {
+
+    /**
+     * In kilograms
+     */
+    private double mass;
+
+    /**
+     * In meters
+     */
+    private Vector2D position;
+
+    /**
+     * In meters per second
+     */
+    private Vector2D velocity;
+
+    /**
+     * In meters per second squared
+     */
+    private Vector2D acceleration;
+
+    /**
+     * In degrees
+     */
+    private double degree = 0;
+
+    private Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
 
     private Path2D shape;
 
+    /**
+     * Creates an Entity with mass `mass` and the convex hull of `shape`
+     * @param mass mass of the entity
+     * @param shape bounding shape of the entity. The convex hull is automatically taken of `shape` to ensure
+     *              convexity
+     */
     public Entity(double mass, Path2D shape) {
         this.mass = mass;
         this.position = new Vector2D(0, 0);
@@ -41,6 +70,12 @@ class Entity {
         this.shape = shift(shape1, uniformCOM(shape1).opposite());
     }
 
+    /**
+     * Creates an Entity with mass `mass` and the convex hull of points (xpoints[n], ypoints[n])
+     * @param mass the mass of the Entity
+     * @param xpoints
+     * @param ypoints
+     */
     public Entity(double mass, double[] xpoints, double[] ypoints) {
         this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
     }
@@ -103,16 +138,19 @@ class Entity {
         double maxY = 0;
 
         for (Vector2D vertex : pathVertices(shape)) {
-            minX = min(vertex, minX);
-            maxX = max(vertex, maxX);
-            minY = min(vertex, minY);
-            maxY = max(vertex, maxY);
+            minX = min(vertex.getX(), minX);
+            maxX = max(vertex.getX(), maxX);
+            minY = min(vertex.getY(), minY);
+            maxY = max(vertex.getY(), maxY);
         }
 
         return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
     }
 
-    //ccw
+    /**
+     * Rotates the shape of this entity by `degree` counter clockwise
+     * @param degree degrees to rotate by
+     */
     public void rotate(double degree) {
         this.degree += degree;
         this.degree %= 360;
