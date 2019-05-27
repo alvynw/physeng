@@ -1,15 +1,16 @@
 package core;
 
+import physics.FollowingForce;
 import physics.Vector2D;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
-
+import java.util.ArrayList;
 import static java.lang.Math.random;
-import static java.lang.Math.min;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static math.ConvexHull.getHull;
 import static physics.CenterOfMass.uniformCOM;
 import static utils.Path2DUtils.pathVertices;
@@ -50,6 +51,7 @@ public class Entity {
     private double degree = 0;
 
     private Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
+    private ArrayList<FollowingForce> followingForces = new ArrayList<>();
 
     private Path2D shape;
 
@@ -66,7 +68,6 @@ public class Entity {
         this.acceleration = new Vector2D(0, 0);
 
         Path2D shape1 = getHull(shape);
-
         this.shape = shift(shape1, uniformCOM(shape1).opposite());
     }
 
@@ -96,6 +97,10 @@ public class Entity {
         this(mass, getHull(p));
     }
 
+    public void addFollowingForce(FollowingForce force) {
+        followingForces.add(force);
+    }
+
     public Path2D getShape() { return shape; }
 
     public double getMass() {
@@ -117,7 +122,6 @@ public class Entity {
     public Color getColor() {
         return color;
     }
-
     public void setColor(Color color) { this.color = color; }
 
     public void setInitialVelocity(Vector2D velocity) { this.velocity = velocity; }
@@ -146,7 +150,6 @@ public class Entity {
 
         return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
     }
-
     /**
      * Rotates the shape of this entity by `degree` counter clockwise
      * @param degree degrees to rotate by

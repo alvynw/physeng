@@ -8,6 +8,7 @@ public class Vector2D {
         this.x = x;
         this.y = y;
     }
+
     public Vector2D() {
         x = 0;
         y = 0;
