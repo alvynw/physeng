@@ -5,16 +5,18 @@ import physics.Vector2D;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
+import java.util.ArrayList;
 
 import static java.lang.Math.random;
 import static math.ConvexHull.getHull;
 
 public class Entity {
-    protected double mass;
-    protected Vector2D position;
-    protected Vector2D velocity;
-    protected Vector2D acceleration;
-    protected Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
+    private double mass;
+    private Vector2D position;
+    private Vector2D velocity;
+    private Vector2D acceleration;
+    private Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
+    private ArrayList<FollowingForce> followingForces = new ArrayList<>();
 
     private Path2D shape;
 
@@ -26,14 +28,13 @@ public class Entity {
         this.shape = getHull(shape);
     }
 
-
     public Entity(double mass, double[] xpoints, double[] ypoints) {
         this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
 
     }
 
     public void addFollowingForce(FollowingForce force) {
-
+        followingForces.add(force);
     }
 
     public Entity(double mass, int[] xpoints, int[] ypoints) {
@@ -81,11 +82,4 @@ public class Entity {
 
     public void setInitialAcceleration(Vector2D acceleration) { this.acceleration = acceleration; }
 
-
-//    public static void main (String[] args) {
-//        Entity entity = new Entity(10, null);
-//
-//        entity.addFollowingForce(new FollowingForce((double t) -> new Vector2D(t*t, t*t);));
-//
-//    }
 }

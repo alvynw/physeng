@@ -1,16 +1,12 @@
 package physics;
 
-import core.*;
-
 import java.util.function.Function;
 
 public class FieldForce<Input>{
     Function<Input, Function<Vector2D, Vector2D>> function;
-    Vector2D position;
-    //static Entity followingEntity;
+
     public FieldForce(Function<Input, Function<Vector2D, Vector2D>> function){
         this.function = function;
-        //this.position = position;
     }
 
     public Function<Vector2D, Vector2D> queryFunction(Input input) {

@@ -2,8 +2,6 @@ package math;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
-import java.awt.geom.PathIterator;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
 
@@ -95,7 +93,7 @@ public class ConvexHull {
         double[] lowest = list[0];
         for (int i = 1; i < list.length; i++) {
             if (list[i][1] < lowest[1]) {
-                lowest = list[1];
+                lowest = list[i];
             }
         }
 
