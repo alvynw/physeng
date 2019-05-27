@@ -55,6 +55,10 @@ public class Entity {
         this(mass, getHull(points));
     }
 
+    public void setPosition(Vector2D pos) {
+        this.position = pos;
+    }
+
     public Entity(double mass, int[][] points) {
         this(mass, getHull(points));
     }

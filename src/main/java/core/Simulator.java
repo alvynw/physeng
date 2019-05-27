@@ -1,5 +1,7 @@
 package core;
 
+import javafx.scene.shape.Ellipse;
+import physics.Vector2D;
 import shapes.Circle;
 
 import javax.swing.*;
@@ -11,12 +13,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.lang.Math.random;
+import static utils.Path2DUtils.pathVertices;
+import static utils.Path2DUtils.shift;
+
 public class Simulator extends JPanel {
 
     int width;
     int height;
-    List<Entity> entities = new LinkedList<Entity>(); //Once a circle or square is created, each shape will be put into this list.
-    // go through list and add each entity to the panel
+    List<Entity> entities = new LinkedList<Entity>();
 
 
     int x;
@@ -28,16 +33,6 @@ public class Simulator extends JPanel {
         this.height = height;
         this.entities = entities;
 
-        Path2D path = new Path2D.Double();
-
-        path.moveTo(0, 0);
-        path.lineTo(100, 0);
-        path.lineTo(100, 200);
-        path.lineTo(50, 100);
-        path.lineTo(0, 200);
-        path.closePath();
-
-        entities.add(new Entity(10, path));
 
         setSize(width, height);
         setVisible(true);
@@ -53,9 +48,6 @@ public class Simulator extends JPanel {
         repaint();
     }
 
-    public void rotation() {
-        //use transform method from Path2D
-    }
 
     @Override
     public void paintComponent(Graphics g) {
@@ -64,56 +56,27 @@ public class Simulator extends JPanel {
 
         super.paintComponent(g);
 
-        g2d.draw(new Ellipse2D.Double(100, 100, 250, 250));
 
         for (int i = 0; i < entities.size(); i++) {
+
             Entity entity = entities.get(i);
 
             if (entity instanceof Circle) {
                 Circle circle = (Circle) entity;
-                g2d.draw(new Ellipse2D.Double(circle.getPosition().getX(), circle.getPosition().getY(), 250, 250));
+                g2d.setColor(circle.getColor());
+                Ellipse2D circle2 = new Ellipse2D.Double(circle.getPosition().getX(), circle.getPosition().getY(), 10, 10);
+                g2d.fill(circle2);
             }
 
-            /*if(entity instanceof Rectangle)
+            else
             {
-                Rectangle rect = (Rectangle) entity;
-                g2d.draw(new Rectangle2D.Double(entity.getPosition().getX(), 50.5, 200, 200));
-            }*/
+                g2d.setColor(entity.getColor());
+                g2d.fill(shift(entity.getShape(), entity.getPosition()));
 
-            else {
-                g2d.draw(entity.getShape());
+                g2d.setColor(Color.BLACK);
+                g2d.draw(shift(entity.getShape(), entity.getPosition()));
 
             }
-
-            /*List<Point2D> segList=new ArrayList<Point2D>();
-            Shape eShape = entity.getShape();
-            PathIterator pShape = eShape.getPathIterator(null);
-
-            while (!pShape.isDone())
-            {
-                final double[] seg = new double[6];
-
-                pShape.currentSegment(seg);
-                segList.add(new Point2D.Double(seg[0], seg[1]));
-                pShape.next();
-            }
-
-            for(int j = 0; i < segList.size(); j++)
-            {
-
-
-            }*/
-
-
-            // g2d.draw(new Rectangle2D.Double(entity.getPosition().getX(), 50.5, 200, 200));
-            //  g2d.draw(new Arc2D.Double(entity.getPosition().getX(), entity.getPosition().getY(),
-            //  50.5, 50.5, 20.0, 20.0, 20));
-
-
-            //if() sees what shape the entity is. if circle,
-            // g2d.draw(entity.getPosition().getX(), 50, 50, 50);
-            //use pathIterator
-
         }
     }
 }
