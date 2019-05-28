@@ -9,8 +9,8 @@ public class FollowingForce {
         this.function = function;
     }
 
-    public Vector2D query(Double input) {
-        return function.apply(input);
+    public Vector2D apply(Double time) {
+        return function.apply(time);
     }
 
 }
