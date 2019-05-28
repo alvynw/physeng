@@ -8,54 +8,34 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Ellipse extends Entity{
-        private double width, height;
-        public Ellipse(double mass, double width, double  height){
-            super(mass, createPath(width, height));
-            this.width = width;
-            this.height = height;
+public class Ellipse extends Entity {
+    private double width, height;
 
-            //  super(mass, path);
+    public Ellipse(double mass, double width, double height) {
+        super(mass, createPath(width, height));
+        this.width = width;
+        this.height = height;
+    }
 
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    private static Path2D createPath(double width, double height) {
+        double halfY = height / 2;
+        double halfX = width / 2;
+        int counter = 0;
+        ArrayList<Vector2D> coords = new ArrayList<>();
+        for (double y = -1 * halfY; y <= halfY; y += height / 100) {
+            double x = Math.sqrt(Math.abs(halfX * halfX * (1 - y * y / halfY / halfY)));
+            coords.add(new Vector2D(x, y));
+            coords.add(new Vector2D(-1 * x, y));
+            counter += 2;
         }
-        private static Path2D createPath(double width, double height){
-            double halfY = height/2;
-            double halfX = width/2;
-            int counter = 0;
-            ArrayList<Vector2D> coords = new ArrayList<>();
-            double radius = Math.max(width,height)/2;
-            if(radius == halfY) {
-                for (double y = -1 * radius; y <= radius; y += .01) {
-                    double x = Math.sqrt(Math.abs(halfX*halfX*(1-y*y/halfY/halfY)));
-                    coords.add(new Vector2D(x, y));
-                    coords.add(new Vector2D(-1*x, y));
-                    //System.out.println(coords.get(counter));
-                    counter++;
-                }
-//                for(int i = counter-1; i >=0; i--){
-//
-//                   System.out.println(coords.get(i).getX()*coords.get(i).getX()/(halfX*halfX)+
-//                            coords.get(i).getY()*coords.get(i).getY()/(halfY*halfY));
-//                }
-
-            }
-            else{
-                for (double x = -1 * radius; x <= radius; x += .01) {
-                    double y = Math.sqrt(halfY*halfY*Math.abs(1-x*x/(halfX*halfX)));
-                    coords.add(new Vector2D(x, y));
-                    coords.add(new Vector2D(x, -1*y));
-                    counter+=2;
-                }
-//                for(int i = counter-1; i >=0; i--){
-//
-//                   System.out.println(coords.get(i).getX()*coords.get(i).getX()/(halfX*halfX)+
-//                           coords.get(i).getY()*coords.get(i).getY()/(halfY*halfY));
-//                }
-            }
-
-            return Path2DUtils.generatePath(coords.toArray(new Vector2D[counter]));
-        }
-        public static void main (String args[]){
-            Ellipse test = new Ellipse(10, 8, 4);
-        }
+        return Path2DUtils.generatePath(coords.toArray(new Vector2D[counter]));
+    }
 }

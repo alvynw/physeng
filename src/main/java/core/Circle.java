@@ -1,8 +1,6 @@
 package core;
 
-import com.sun.deploy.config.VerboseDefaultConfig;
 import physics.Vector2D;
-import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
@@ -27,6 +25,22 @@ public class Circle extends Entity {
         }
         return Path2DUtils.generatePath(coords.toArray(new Vector2D[counter]));
 
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public int[] getxPoints() {
+        return xPoints;
+    }
+
+    public int[] getyPoints() {
+        return yPoints;
+    }
+
+    public int getnPoints() {
+        return nPoints;
     }
 //    public Circle(double mass, Vector2D position, Vector2D velocity, double radius){
 //        super(mass, position, velocity, new Polygon());
