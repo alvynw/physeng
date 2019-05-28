@@ -18,8 +18,6 @@ public class FollowingForce<Input> {
 
     public static void main(String args[]){
 
-        Entity obj = new Entity(10, null);
-        obj.setInitialPosition(new Vector2D(10, 10));
 
         ArrayList<Double> list = new ArrayList<>();
         list.add(1.0);

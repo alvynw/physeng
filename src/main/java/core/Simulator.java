@@ -1,5 +1,7 @@
 package core;
 
+import physics.Vector2D;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +36,8 @@ public class Simulator extends JPanel {
         path.closePath();
 
         entities.add(new Entity(10, path));
-
+        entities.add(new Circle(10, 100));
+        entities.get(1).setInitialPosition(new Vector2D(100,100));
         setSize(width, height);
         setVisible(true);
 
