@@ -97,10 +97,6 @@ public class Entity {
         this(mass, getHull(p));
     }
 
-    public void addFollowingForce(FollowingForce force) {
-        followingForces.add(force);
-    }
-
     public Path2D getShape() { return shape; }
 
     public double getMass() {
@@ -122,6 +118,7 @@ public class Entity {
     public Color getColor() {
         return color;
     }
+
     public void setColor(Color color) { this.color = color; }
 
     public void setInitialVelocity(Vector2D velocity) { this.velocity = velocity; }
@@ -150,6 +147,11 @@ public class Entity {
 
         return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
     }
+
+    public void addFollowingForce(FollowingForce force) {
+        followingForces.add(force);
+    }
+
     /**
      * Rotates the shape of this entity by `degree` counter clockwise
      * @param degree degrees to rotate by

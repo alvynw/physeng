@@ -2,22 +2,18 @@ package physics;
 
 import java.util.function.Function;
 
-public class FieldForce<Input>{
-    Function<Input, Function<Vector2D, Vector2D>> function;
+public class FieldForce {
+    Function<Double, Function<Vector2D, Vector2D>> function;
 
-    public FieldForce(Function<Input, Function<Vector2D, Vector2D>> function){
+    public FieldForce(Function<Double, Function<Vector2D, Vector2D>> function){
         this.function = function;
     }
 
-    public Function<Vector2D, Vector2D> queryFunction(Input input) {
+    public Function<Vector2D, Vector2D> queryFunction(Double input) {
         return function.apply(input);
     }
 
-    public Vector2D query(Input input, Vector2D location) {
+    public Vector2D query(Double input, Vector2D location) {
         return function.apply(input).apply(location);
-    }
-
-    public static void main(String[] args) {
-        FieldForce<Double> gravity = new FieldForce<Double>((Double d) -> ((Vector2D position) -> new Vector2D(0, -9.8 * d)));
     }
 }
