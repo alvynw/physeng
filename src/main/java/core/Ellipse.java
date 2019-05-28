@@ -26,27 +26,31 @@ public class Ellipse extends Entity{
             double radius = Math.max(width,height)/2;
             if(radius == halfY) {
                 for (double y = -1 * radius; y <= radius; y += .01) {
-                    coords.add(new Vector2D(Math.sqrt(Math.abs(halfX*halfX*(1-y*y/halfY/halfY))), y));
+                    double x = Math.sqrt(Math.abs(halfX*halfX*(1-y*y/halfY/halfY)));
+                    coords.add(new Vector2D(x, y));
+                    coords.add(new Vector2D(-1*x, y));
                     //System.out.println(coords.get(counter));
                     counter++;
                 }
-                for(int i = counter-1; i >=0; i--){
-                    coords.add(new Vector2D(coords.get(i).getX()*-1, coords.get(i).getY()));
-                   System.out.println(coords.get(i).getX()*coords.get(i).getX()/(halfX*halfX)+
-                            coords.get(i).getY()*coords.get(i).getY()/(halfY*halfY));
-                }
+//                for(int i = counter-1; i >=0; i--){
+//
+//                   System.out.println(coords.get(i).getX()*coords.get(i).getX()/(halfX*halfX)+
+//                            coords.get(i).getY()*coords.get(i).getY()/(halfY*halfY));
+//                }
 
             }
             else{
                 for (double x = -1 * radius; x <= radius; x += .01) {
-                    coords.add(new Vector2D(x,Math.sqrt(halfY*halfY*Math.abs(1-x*x/(halfX*halfX)))));
-                    counter++;
+                    double y = Math.sqrt(halfY*halfY*Math.abs(1-x*x/(halfX*halfX)));
+                    coords.add(new Vector2D(x, y));
+                    coords.add(new Vector2D(x, -1*y));
+                    counter+=2;
                 }
-                for(int i = counter-1; i >=0; i--){
-                    coords.add(new Vector2D(coords.get(i).getX(), coords.get(i).getY()*-1));
-                   System.out.println(coords.get(i).getX()*coords.get(i).getX()/(halfX*halfX)+
-                           coords.get(i).getY()*coords.get(i).getY()/(halfY*halfY));
-                }
+//                for(int i = counter-1; i >=0; i--){
+//
+//                   System.out.println(coords.get(i).getX()*coords.get(i).getX()/(halfX*halfX)+
+//                           coords.get(i).getY()*coords.get(i).getY()/(halfY*halfY));
+//                }
             }
 
             return Path2DUtils.generatePath(coords.toArray(new Vector2D[counter]));
