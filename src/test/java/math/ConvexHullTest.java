@@ -37,7 +37,7 @@ public class ConvexHullTest {
                 new Vector2D(0, 2)};
 
         for (int i = 0; i < expected.length; i++) {
-            assertVector2DEquals(vertices[i], expected[i], TOLERANCE);
+            assertVector2DEquals(expected[i], vertices[i], TOLERANCE);
         }
 
     }
@@ -60,7 +60,7 @@ public class ConvexHullTest {
                 new Vector2D(0, 2)};
 
         for (int i = 0; i < expected.length; i++) {
-            assertVector2DEquals(vertices[i], expected[i], TOLERANCE);
+            assertVector2DEquals(expected[i], vertices[i], TOLERANCE);
         }
     }
 

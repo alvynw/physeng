@@ -292,4 +292,5 @@ public class Entity {
 
         shape.transform(transform);
     }
+
 }
