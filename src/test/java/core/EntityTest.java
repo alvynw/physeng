@@ -4,6 +4,7 @@ import org.junit.Test;
 import physics.Vector2D;
 
 import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
 
 import static utils.Path2DTestUtils.assertVector2DEquals;
 import static utils.Path2DUtils.generatePath;

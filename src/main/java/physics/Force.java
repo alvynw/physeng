@@ -1,0 +1,27 @@
+package physics;
+
+import java.util.function.Function;
+
+/**
+ * Represents a force that follows an {@link core.Entity}. This force always acts on the {@link core.Entity}'s center of mass.
+ */
+public class Force {
+    private Function<Double, Vector2D> function;
+
+    /**
+     * Creates a <code>FollowingFoce</code> with the specified function of time
+     * @param function the function of time
+     */
+    public Force(Function<Double, Vector2D> function){
+        this.function = function;
+    }
+
+    /**
+     * Returns the value of the force at a specified time
+     * @param time the time
+     * @return the value of the force at the specified time
+     */
+    public Vector2D apply(Double time) {
+        return function.apply(time);
+    }
+}

@@ -2,10 +2,13 @@ package physics;
 
 import java.util.function.Function;
 
-public class FollowingForce {
-    Function<Double, Vector2D> function;
+/**
+ * Represents a uniform field
+ */
+public class UniformField{
+    private Function<Double, Vector2D> function;
 
-    public FollowingForce(Function<Double, Vector2D> function){
+    public UniformField(Function<Double, Vector2D> function){
         this.function = function;
     }
 
