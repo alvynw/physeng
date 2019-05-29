@@ -10,26 +10,59 @@ import java.util.Stack;
 import static utils.Path2DUtils.pathVertices;
 
 /**
- * Implementation of the Graham scan to find the convex hull of a set of points.
+ * Implementation of the Graham scan to find the convex hull of a set of points. <br>
  * Methods have been overloaded to support a variety of inputs.
+ *
+ * <p></p>
  *
  * This implementation of the Graham scan iterates counterclockwise. The path returned is also the counterclockwise path.
  * In other words, the path returned starts at the bottom most, left most point, and traverses along the convex hull in
  * a counterclockwise loop.
  *
- * Time complexity: O(n)
+ * Intended to never be initialized; use static methods
  */
 
 public class ConvexHull {
 
-    public static Path2D getHull(Path2D path) {
+    /**
+     * Returns the convex hull of the specified {@link Path2D}
+     * @param path the {@link Path2D} to find the convex hull of
+     * @return the convex hull of the specified {@link Path2D}
+     */
+    public static Path2D getHull(Path2D path) throws IllegalArgumentException {
         return hull(pathVertices(path));
     }
 
+
+    /**
+     * Returns the convex hull of the specified points. A point is represented by a {@link Vector2D}.
+     * @param points the {@link Vector2D}<code>[]</code> to find the convex hull of
+     * @return the convex hull of the specified points
+     */
+    public static Path2D getHull(Vector2D[] points) {
+        double[][] t = new double[points.length][2];
+
+        for (int i = 0; i < points.length; i++) {
+            t[i] = points[i].toArray();
+        }
+
+        return getHull(t);
+    }
+
+    /**
+     * Returns the convex hull of the specified points. <br>
+     * <code>xpoints</code> and <code>ypoints</code> must be of the same length and must equal to <code>npoints</code>. <br>
+     * The shape of this <code>Entity</code> is the convex hull of all points <code>(xpoints[i], ypoints[i])</code> where
+     * <code>0 &le; i &lt; npoints </code>
+     * @param xpoints <code>double[]</code> containing x-value of points
+     * @param ypoints <code>double[]</code> containing y-value of points
+     * @param npoints the length of xpoints and ypoints
+     * @return the convex hull of the specified points
+     */
     public static Path2D getHull(double[] xpoints, double[] ypoints, int npoints) {
 
-        if (npoints != xpoints.length || npoints != ypoints.length) {
-            throw new IllegalArgumentException("npoints must be equal to the size of xpoints and ypoints");
+        if (xpoints.length != npoints ||  npoints != ypoints.length) {
+            throw new IllegalArgumentException("xpoints and ypoints must be of equal length and must be equal to npoints");
         }
 
         if (npoints <= 2) {
@@ -46,17 +79,16 @@ public class ConvexHull {
         return hull(list);
     }
 
-    public static Path2D gethUll(Vector2D[] points) {
-        double[][] t = new double[points.length][2];
-
-        for (int i = 0; i < points.length; i++) {
-            t[i] = points[i].toArray();
-        }
-
-        return getHull(t);
-    }
-
-
+    /**
+     * Returns the convex hull of the specified points. <br>
+     * <code>xpoints</code> and <code>ypoints</code> must be of the same length and must equal to <code>npoints</code>. <br>
+     * The shape of this <code>Entity</code> is the convex hull of all points <code>(xpoints[i], ypoints[i])</code> where
+     * <code>0 &le; i &lt; npoints </code>
+     * @param xpoints <code>int[]</code> containing x-value of points
+     * @param ypoints <code>int[]</code> containing y-value of points
+     * @param npoints the length of xpoints and ypoints
+     * @return the convex hull of the specified points
+     */
     public static Path2D getHull(int[] xpoints, int[] ypoints, int npoints) {
 
         if (npoints != xpoints.length || npoints != ypoints.length) {
@@ -74,28 +106,57 @@ public class ConvexHull {
         return getHull(dxpoints, dypoints, npoints);
     }
 
+    /**
+     * Returns the convex hull of the specified points. <br>
+     * <code>points</code> must be of the form <code>double[n][2]</code> where <code>n</code> is the number of points and the
+     * <code>n</code>th point is given by <code>(points[n][0], points[n][1])</code>.
+     * @param points the points to take the convex hull of
+     * @return the convex hull of the specified points
+     */
     public static Path2D getHull(double[][] points) {
         double[] x = new double[points.length];
         double[] y = new double[points.length];
 
         for (int i = 0; i < points.length; i++) {
+
+            if (points[i].length != 2) {
+                throw new IllegalArgumentException("points must be of the shape double[n][2]");
+            }
+
             x[i] = points[i][0];
             y[i] = points[i][1];
         }
         return getHull(x, y, points.length);
     }
 
+    /**
+     * Returns the convex hull of the specified points. <br>
+     * <code>points</code> must be of the form <code>int[n][2]</code> where <code>n</code> is the number of points and the
+     * <code>n</code>th point is given by <code>(points[n][0], points[n][1])</code>.
+     * @param points the points to take the convex hull of
+     * @return the convex hull of the specified points
+     */
     public static Path2D getHull(int[][] points) {
         int[] x = new int[points.length];
         int[] y = new int[points.length];
 
         for (int i = 0; i < points.length; i++) {
+
+            if (points[i].length != 2) {
+                throw new IllegalArgumentException("points must be of the shape int[n][2]");
+            }
+
             x[i] = points[i][0];
             y[i] = points[i][1];
         }
         return getHull(x, y, points.length);
     }
 
+    /**
+     * Returns the convex hull of the specified {@link Polygon}
+     * @param p the {@link Polygon} to find the convex hull of
+     * @return the convex hull of the specified {@link Path2D}
+     */
     public static Path2D getHull(Polygon p) {
 
         int[] pxpoints = new int[p.npoints];
