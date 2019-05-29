@@ -5,13 +5,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import physics.Vector2D;
 
-import static org.junit.Assert.*;
 import static utils.Path2DTestUtils.assertVector2DEquals;
 import static utils.Path2DUtils.pathVertices;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
-wimport java.util.Vector;
 
 public class ConvexHullTest {
 
@@ -41,6 +39,7 @@ public class ConvexHullTest {
         for (int i = 0; i < expected.length; i++) {
             assertVector2DEquals(vertices[i], expected[i], TOLERANCE);
         }
+
     }
 
     @Test
