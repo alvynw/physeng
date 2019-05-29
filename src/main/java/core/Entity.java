@@ -1,6 +1,6 @@
 package core;
 
-import physics.FollowingForce;
+import physics.Force;
 import physics.Vector2D;
 
 import java.awt.*;
@@ -60,7 +60,7 @@ public class Entity {
     /**
      * List containing <code>FollowingForces</code> of this <code>Entity</code>
      */
-    private ArrayList<FollowingForce> followingForces = new ArrayList<>();
+    private ArrayList<Force> followingForces = new ArrayList<>();
 
     /**
      * <code>Path2D</code> representing the bounding shape of this <code>Entity</code>
@@ -270,10 +270,10 @@ public class Entity {
     }
 
     /**
-     * Adds a {@link FollowingForce} to this <code>Entity</code>
+     * Adds a {@link Force} to this <code>Entity</code>
      * @param force the force to add
      */
-    public void addFollowingForce(FollowingForce force) {
+    public void addFollowingForce(Force force) {
         followingForces.add(force);
     }
 
