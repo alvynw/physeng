@@ -2,29 +2,52 @@ package core;
 
 import physics.Vector2D;
 import utils.Path2DUtils;
-
 import java.awt.geom.Path2D;
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Creates an ellipse of specified width and length.
+ */
 public class Ellipse extends Entity {
+    /**
+     *width and height of the ellipse
+     */
     private double width, height;
 
+    /**
+     * constructs an ellipse
+     * @param mass of ellipse
+     * @param width of ellipse
+     * @param height of ellipse
+     */
     public Ellipse(double mass, double width, double height) {
         super(mass, createPath(width, height));
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * acess width of the ellipse
+     * @return width of the ellipse
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * acess height of ellipse
+     * @return height of ellipse
+     */
     public double getHeight() {
         return height;
     }
 
+    /**
+     * creates path2d of ellipse
+     * @param width of the ellipse
+     * @param height of the ellipse
+     * @return shape/path2d of the ellipse
+     */
     private static Path2D createPath(double width, double height) {
         double halfY = height / 2;
         double halfX = width / 2;
