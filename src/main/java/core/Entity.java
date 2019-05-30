@@ -13,7 +13,6 @@ import static java.lang.Math.random;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static math.ConvexHull.getHull;
-import static physics.CenterOfMass.uniformCOM;
 import static utils.Path2DUtils.*;
 
 /**
@@ -85,7 +84,7 @@ public class Entity {
         this.velocity = new Vector2D(0, 0);
         this.acceleration = new Vector2D(0, 0);
         Path2D shape1 = getHull(shape);
-        this.shape = shift(shape1, uniformCOM(shape1).opposite());
+        this.shape = shift(shape1, com().opposite());
     }
 
     /**
@@ -181,24 +180,24 @@ public class Entity {
     }
 
     /**
-     * Returns the position, in meters, of this <code>Entity</code>
-     * @return the position, in meters, of this <code>Entity</code>
+     * Returns the position, in meters, of this <code>Entity</code>'s center of mass
+     * @return the position, in meters, of this <code>Entity</code>'s center of mass
      */
     public Vector2D getPosition() {
         return position;
     }
 
     /**
-     * Returns the velocity, in meters per second, of this <code>Entity</code>
-     * @return the velocity, in meters per second, of this <code>Entity</code>
+     * Returns the velocity, in meters per second, of this <code>Entity</code>'s center of mass
+     * @return the velocity, in meters per second, of this <code>Entity</code>'s center of mass
      */
     public Vector2D getVelocity() {
         return velocity;
     }
 
     /**
-     * Returns the acceleration, in meters per second squared, of this <code>Entity</code>
-     * @return the acceleration, in meters per second squared, of this <code>Entity</code>
+     * Returns the acceleration, in meters per second squared, of this <code>Entity</code>'s center of mass
+     * @return the acceleration, in meters per second squared, of this <code>Entity</code>'s center of mass
      */
     public Vector2D getAcceleration() {
         return acceleration;
@@ -293,5 +292,25 @@ public class Entity {
         transform.rotate(degree * Math.PI / 180);
 
         shape.transform(transform);
+    }
+
+    /**
+     * Returns the center of mass of this <code>Entity</code>
+     * @return the center of mass of this <code>Entity</code>
+     */
+    public Vector2D com() {
+
+        Vector2D[] points = pathVertices(shape);
+
+        double sumX = 0;
+        double sumY = 0;
+
+        for (int i = 0; i < points.length; i++) {
+            sumX += points[i].getX();
+            sumY += points[i].getY();
+        }
+
+        Vector2D com = new Vector2D(sumX / points.length, sumY / points.length);
+        return com;
     }
 }
