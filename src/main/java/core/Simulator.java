@@ -1,5 +1,7 @@
 package core;
 
+import physics.Vector2D;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +22,6 @@ public class Simulator extends JPanel {
         this.width = width;
         this.height = height;
         this.entities = entities;
-
 
         setSize(width, height);
         setVisible(true);
@@ -46,8 +47,6 @@ public class Simulator extends JPanel {
         for (int i = 0; i < entities.size(); i++) {
 
             Entity entity = entities.get(i);
-
-
             /*
 
             Coming soon

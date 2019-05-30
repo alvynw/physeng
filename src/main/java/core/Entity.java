@@ -112,6 +112,7 @@ public class Entity {
      */
     public Entity(double mass, double[] xpoints, double[] ypoints) {
         this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
+
     }
 
     /**
@@ -210,6 +211,7 @@ public class Entity {
     public Color getColor() {
         return color;
     }
+
     /**
      * Returns the degrees the shape has turned relative to 0, the initial orientation of the shape
      * @return the degrees the shape has turned relative to 0, the initial orientation of the shape
