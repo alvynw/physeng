@@ -22,19 +22,7 @@ public class Simulator extends JPanel {
         this.entities = entities;
 
 
-        Path2D path = new Path2D.Double();
 
-        path.moveTo(1, 1);
-        path.lineTo(0, 0);
-        path.lineTo(2, 0);
-        path.lineTo(2, 2);
-        path.lineTo(0, 2);
-        path.closePath();
-
-        entities.add(new Entity(10, path));
-        //for(int i = 0; i < 5000; i++) {
-        //    entities.add(new Circle(10, path));
-       // }
 
 
         setSize(width, height);
