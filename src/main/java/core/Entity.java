@@ -23,13 +23,14 @@ import static utils.Path2DUtils.shift;
  * @see Environment
  */
 
-public class Entity {
+
 
 public class Entity {
     private double mass;
     private Vector2D position;
     private Vector2D velocity;
     private Vector2D acceleration;
+    private double degree = 0.0;
     private Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
     private ArrayList<FollowingForce> followingForces = new ArrayList<>();
 
@@ -69,25 +70,7 @@ public class Entity {
         this(mass, getHull(p));
     }
 
-    public Entity(double mass, int[] xpoints, int[] ypoints) {
-        this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
-    }
 
-    public Entity(double mass, double[][] points) {
-        this(mass, getHull(points));
-    }
-
-    public void setPosition(Vector2D pos) {
-        this.position = pos;
-    }
-
-    public Entity(double mass, int[][] points) {
-        this(mass, getHull(points));
-    }
-
-    public Entity(double mass, Polygon p) {
-        this(mass, getHull(p));
-    }
 
     public Path2D getShape() { return shape; }
 

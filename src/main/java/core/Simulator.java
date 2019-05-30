@@ -22,6 +22,21 @@ public class Simulator extends JPanel {
         this.entities = entities;
 
 
+        Path2D path = new Path2D.Double();
+
+        path.moveTo(1, 1);
+        path.lineTo(0, 0);
+        path.lineTo(2, 0);
+        path.lineTo(2, 2);
+        path.lineTo(0, 2);
+        path.closePath();
+
+        entities.add(new Entity(10, path));
+        //for(int i = 0; i < 5000; i++) {
+        //    entities.add(new Circle(10, path));
+       // }
+
+
         setSize(width, height);
         setVisible(true);
 
@@ -69,7 +84,14 @@ public class Simulator extends JPanel {
                 g2d.setColor(Color.BLACK);
                 g2d.draw(shift(entity.getShape(), entity.getPosition()));
 
-//            }
+
+            }
+
+            //entity.rotate(45);
+            //entity.setPosition(entity.getPosition().add(new Vector2D(   Math.random() * 10, Math.random() * 10)));
+
+
+
         }
     }
-}
+

@@ -11,7 +11,7 @@ import static utils.Path2DUtils.pathVertices;
 
 import java.awt.*;
 import java.awt.geom.Path2D;
-wimport java.util.Vector;
+import java.util.Vector;
 
 public class ConvexHullTest {
 
