@@ -1,5 +1,7 @@
 package core;
 
+import physics.Vector2D;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

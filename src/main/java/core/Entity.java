@@ -111,6 +111,7 @@ public class Entity {
      */
     public Entity(double mass, double[] xpoints, double[] ypoints) {
         this(mass, getHull(xpoints, ypoints, Math.min(xpoints.length, ypoints.length)));
+
     }
 
     /**
