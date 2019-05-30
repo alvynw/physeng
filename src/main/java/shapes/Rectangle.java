@@ -1,4 +1,5 @@
-package core;
+package shapes;
+import core.Entity;
 import physics.Vector2D;
 import utils.*;
 

@@ -1,4 +1,6 @@
-package core;
+package shapes;
+
+import core.Entity;
 
 /**
  * An {@link Entity} with a bounding shape of a circle

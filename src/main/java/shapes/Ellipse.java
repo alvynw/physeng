@@ -1,5 +1,6 @@
-package core;
+package shapes;
 
+import core.Entity;
 import physics.Vector2D;
 import utils.Path2DUtils;
 import java.awt.geom.Path2D;
