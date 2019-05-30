@@ -8,6 +8,7 @@ import java.awt.geom.Path2D;
  * Creates a rectangle of specified height and width
  */
 public class Rectangle extends Entity{
+
     /**
      * width and height of rectangle
      */
