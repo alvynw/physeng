@@ -6,19 +6,21 @@ import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
 /**
- * Creates an ellipse of specified width and length.
+ * An {@link Entity} with a bounding shape of an ellipse
  */
 public class Ellipse extends Entity {
+
     /**
      *width and height of the ellipse
      */
     private double width, height;
 
     /**
-     * constructs an ellipse
-     * @param mass of ellipse
-     * @param width of ellipse
-     * @param height of ellipse
+     * Creates an <code>Ellipse</code> with the specified mass, width, and height. Note that what you pass in for <code>width</code>width
+     * and <code>height</code> merely determines the 0 degree orientation of the <code>Ellipse</code>
+     * @param mass mass of the <code>Ellipse</code>
+     * @param width width of the <code>Ellipse</code>
+     * @param height height of the <code>Ellipse</code>
      */
     public Ellipse(double mass, double width, double height) {
         super(mass, createPath(width, height));
@@ -27,26 +29,26 @@ public class Ellipse extends Entity {
     }
 
     /**
-     * acess width of the ellipse
-     * @return width of the ellipse
+     * Returns the width of the <code>Ellipse</code>
+     * @return the width of the <code>Ellipse</code>
      */
     public double getWidth() {
         return width;
     }
 
     /**
-     * acess height of ellipse
-     * @return height of ellipse
+     * Returns the height of the <code>Ellipse</code>
+     * @return the height of the <code>Ellipse</code>
      */
     public double getHeight() {
         return height;
     }
 
     /**
-     * creates path2d of ellipse
-     * @param width of the ellipse
-     * @param height of the ellipse
-     * @return shape/path2d of the ellipse
+     * Returns a {@link Path2D} in the shape of an ellipse
+     * @param width width of the <code>Ellipse</code>
+     * @param height height of the <code>Ellipse</code>
+     * @return a {@link Path2D} in the shape of an ellipse
      */
     private static Path2D createPath(double width, double height) {
         double halfY = height / 2;

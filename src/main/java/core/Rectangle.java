@@ -5,7 +5,7 @@ import utils.*;
 import java.awt.geom.Path2D;
 
 /**
- * Creates a rectangle of specified height and width
+ * An {@link Entity} with the bounding shape of a rectangle
  */
 public class Rectangle extends Entity{
 
@@ -15,8 +15,9 @@ public class Rectangle extends Entity{
     private double height, width;
 
     /**
-     * constructs a rectangle
-     * @param mass of entity
+     * Creates a <code>Rectangle</code> with the specified mass and dimensions. Note that what you pass in for <code>width</code>
+     * and <code>height</code> merely determines the 0 degree orientation of the <code>Rectangle</code>
+     * @param mass mass of the <code>Rectangle</code>
      * @param height of rectangle
      * @param width of rectangle
      */

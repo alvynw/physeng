@@ -1,17 +1,17 @@
 package core;
 
 /**
- * Creates a square of specified side length
+ * An {@link Entity} with a bounding shape of a square
  */
 public class Square extends Rectangle{
-    /**
-     * constructs a square
-     * @param mass of entity
-     * @param side length of square
-     */
-    public Square(double mass, double side){
-        super(mass, side, side);
 
+    /**
+     * Creates a <code>Square</code> with the specified mass and side length
+     * @param mass mass of the <code>Square</code>
+     * @param sideLength sideLength of the <code>Square</code>
+     */
+    public Square(double mass, double sideLength){
+        super(mass, sideLength, sideLength);
     }
 
     /**
