@@ -302,15 +302,25 @@ public class Entity {
 
         Vector2D[] points = pathVertices(shape);
 
+        double A = 0;
+        for (int i = 0; i < points.length - 1; i++) {
+            A += points[i].getX() * points[i + 1].getY() - points[i + 1].getX() * points[i].getY();
+        }
+
+        A /= 2;
+
         double sumX = 0;
         double sumY = 0;
 
-        for (int i = 0; i < points.length; i++) {
-            sumX += points[i].getX();
-            sumY += points[i].getY();
+        for (int i = 0; i < points.length - 1; i++) {
+            sumX += (points[i].getX() + points[i + 1].getX()) * (points[i].getX() * points[i + 1].getY() - points[i + 1].getX() * points[i].getY());
+            sumY += (points[i].getY() + points[i + 1].getY()) * (points[i].getX() * points[i + 1].getY() - points[i + 1].getX() * points[i].getY());;
         }
 
-        Vector2D com = new Vector2D(sumX / points.length, sumY / points.length);
+        sumX /= 6 * A;
+        sumY /= 6 * A;
+
+        Vector2D com = new Vector2D(sumX, sumY);
         return com;
     }
 }

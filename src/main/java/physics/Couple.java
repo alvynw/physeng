@@ -5,8 +5,6 @@ import java.util.function.Function;
 /**
  * Represents a couple that follows an {@link core.Entity}. This couple always acts about the {@link core.Entity}'s center of mass.
  * Positive is counterclockwise. The unit is in Newton-meters.
- *
- * @see CenterOfMass
  */
 public class Couple {
     private Function<Double, Double> function;
