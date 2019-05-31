@@ -13,7 +13,7 @@ public class Circle extends Ellipse {
      * @param radius radius of the <code>Circle</code>
      */
     public Circle(double mass, double radius ){
-        super(mass, radius, radius);
+        super(mass, radius * 2, radius * 2);
     }
 
     /**
@@ -21,7 +21,7 @@ public class Circle extends Ellipse {
      * @return the radius of the <code>Circle</code>
      */
     public double getRadius() {
-        return getHeight();
+        return getHeight() / 2;
     }
 
 }

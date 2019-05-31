@@ -56,10 +56,10 @@ public class Ellipse extends Entity {
         double halfX = width / 2;
         int counter = 0;
         ArrayList<Vector2D> coords = new ArrayList<>();
-        for (double y = -1 * halfY; y <= halfY; y += height / 100) {
-            double x = Math.sqrt(Math.abs(halfX * halfX * (1 - y * y / halfY / halfY)));
+        for (double y = -halfY; y <= halfY; y += height / 100) {
+            double x = Math.sqrt(halfX * halfX * (1 - y * y / halfY / halfY));
             coords.add(new Vector2D(x, y));
-            coords.add(new Vector2D(-1 * x, y));
+            coords.add(new Vector2D(-x, y));
             counter += 2;
         }
         return Path2DUtils.generatePath(coords.toArray(new Vector2D[counter]));

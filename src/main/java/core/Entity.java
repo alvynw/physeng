@@ -1,5 +1,6 @@
 package core;
 
+import physics.Couple;
 import physics.Force;
 import physics.Vector2D;
 
@@ -9,9 +10,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-import static java.lang.Math.random;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 import static math.ConvexHull.getHull;
 import static utils.Path2DUtils.*;
 
@@ -37,6 +36,12 @@ public class Entity {
     private double mass;
 
     /**
+     * In kilogram-meter-squared
+     * About the axis perpendicular to the plane passing through the center of mass
+     */
+    private double momentOfInertia;
+
+    /**
      * In meters
      */
     private Vector2D position;
@@ -57,9 +62,14 @@ public class Entity {
     private Color color = new Color((int) (random() * 256), (int) (random() * 256), (int) (random() * 256));
 
     /**
-     * List containing <code>FollowingForces</code> of this <code>Entity</code>
+     * List containing <code>Forces</code> acting on this <code>Entity</code>
      */
-    private ArrayList<Force> followingForces = new ArrayList<>();
+    private ArrayList<Force> forces = new ArrayList<>();
+
+    /**
+     * List containing <code>Couples</code> acting on this <code>Entity</code>
+     */
+    private ArrayList<Couple> couples = new ArrayList<>();
 
     /**
      * <code>Path2D</code> representing the bounding shape of this <code>Entity</code>
@@ -84,7 +94,8 @@ public class Entity {
         this.velocity = new Vector2D(0, 0);
         this.acceleration = new Vector2D(0, 0);
         Path2D shape1 = getHull(shape);
-        this.shape = shift(shape1, com().opposite());
+        this.shape = shift(shape1, com(shape1).opposite());
+        this.momentOfInertia = momentOfInertia();
     }
 
     /**
@@ -166,7 +177,8 @@ public class Entity {
     }
 
     /**
-     * Returns the bounding shape in its current orientation of this <code>Entity</code>
+     * Returns the bounding shape in its current orientation of this <code>Entity</code>. The returned shape has its center
+     * of mass located at (0,0)
      * @return the bounding shape in its current orientation of this <code>Entity</code>
      */
     public Path2D getShape() { return shape; }
@@ -180,6 +192,15 @@ public class Entity {
     }
 
     /**
+     * Returns the moment of inertia, in kilogram meters squared, of this <code>Entity</code>
+     * about the axis perpendicular to the plane passing through the center of mass.
+     * @return the moment of inertia, in kilogram meters squared, of this <code>Entity</code>
+     */
+    public double getMomentOfInertia() {
+        return momentOfInertia;
+    }
+
+    /**
      * Returns the position, in meters, of this <code>Entity</code>'s center of mass
      * @return the position, in meters, of this <code>Entity</code>'s center of mass
      */
@@ -188,16 +209,16 @@ public class Entity {
     }
 
     /**
-     * Returns the velocity, in meters per second, of this <code>Entity</code>'s center of mass
-     * @return the velocity, in meters per second, of this <code>Entity</code>'s center of mass
+     * Returns the velocity, in meters per second, of this <code>Entity</code>
+     * @return the velocity, in meters per second, of this <code>Entity</code>
      */
     public Vector2D getVelocity() {
         return velocity;
     }
 
     /**
-     * Returns the acceleration, in meters per second squared, of this <code>Entity</code>'s center of mass
-     * @return the acceleration, in meters per second squared, of this <code>Entity</code>'s center of mass
+     * Returns the acceleration, in meters per second squared, of this <code>Entity</code>
+     * @return the acceleration, in meters per second squared, of this <code>Entity</code>
      */
     public Vector2D getAcceleration() {
         return acceleration;
@@ -274,8 +295,16 @@ public class Entity {
      * Adds a {@link Force} to this <code>Entity</code>
      * @param force the force to add
      */
-    public void addFollowingForce(Force force) {
-        followingForces.add(force);
+    public void addForce(Force force) {
+        forces.add(force);
+    }
+
+    /**
+     * Adds a {@link Couple} to this <code>Entity</code>
+     * @param couple the couple to add
+     */
+    public void addCouple(Couple couple) {
+        couples.add(couple);
     }
 
     /**
@@ -295,16 +324,29 @@ public class Entity {
     }
 
     /**
-     * Returns the center of mass of this <code>Entity</code>
+     * Returns the center of mass of this {@link Path2D}
+     * @param shape the {@link Path2D} to find the center of mass of
      * @return the center of mass of this <code>Entity</code>
      */
-    public Vector2D com() {
+    private Vector2D com(Path2D shape) {
+
+        /* Developer's note
+         *
+         * See https://en.wikipedia.org/wiki/Centroid#Of_a_polygon for formula and
+         * see Han de Brujin's comment on https://math.stackexchange.com/questions/3177/why-doesnt-a-simple-mean-give-the-position-of-a-centroid-in-a-polygon
+         * for the derivation
+         *
+         */
 
         Vector2D[] points = pathVertices(shape);
 
         double A = 0;
-        for (int i = 0; i < points.length - 1; i++) {
-            A += points[i].getX() * points[i + 1].getY() - points[i + 1].getX() * points[i].getY();
+        for (int i = 0; i < points.length; i++) {
+
+            Vector2D curr = points[i];
+            Vector2D next = i == points.length - 1 ? points[0] : points[i + 1];
+            
+            A += curr.getX() * next.getY() - next.getX() * curr.getY();
         }
 
         A /= 2;
@@ -312,15 +354,84 @@ public class Entity {
         double sumX = 0;
         double sumY = 0;
 
-        for (int i = 0; i < points.length - 1; i++) {
-            sumX += (points[i].getX() + points[i + 1].getX()) * (points[i].getX() * points[i + 1].getY() - points[i + 1].getX() * points[i].getY());
-            sumY += (points[i].getY() + points[i + 1].getY()) * (points[i].getX() * points[i + 1].getY() - points[i + 1].getX() * points[i].getY());;
+        for (int i = 0; i < points.length; i++) {
+
+            Vector2D curr = points[i];
+            Vector2D next = i == points.length - 1 ? points[0] : points[i + 1];
+            
+            sumX += (curr.getX() + next.getX()) * (curr.getX() * next.getY() - next.getX() * curr.getY());
+            sumY += (curr.getY() + next.getY()) * (curr.getX() * next.getY() - next.getX() * curr.getY());
         }
 
-        sumX /= 6 * A;
-        sumY /= 6 * A;
+        sumX = sumX / 6 / A;
+        sumY = sumY / 6 / A;
 
         Vector2D com = new Vector2D(sumX, sumY);
         return com;
     }
+
+    /**
+     * Returns the moment of inertia of this <code>Entity</code> rotating about the axis perpendicular to the plane and
+     * passing through its center of mass
+     * @return the moment of inertia of this <code>Entity</code>
+     */
+    private double momentOfInertia() {
+        Vector2D[] vertices = pathVertices(this.shape);
+
+        double totalArea = 0;
+        double[] areas = new double[vertices.length];
+
+        for (int i = 0; i < vertices.length; i++) {
+
+            Vector2D curr = vertices[i];
+            Vector2D next = i == vertices.length - 1 ? vertices[0] : vertices[i + 1];
+
+            areas[i] = areaOfTriangle(curr, next);
+            totalArea += areas[i];
+        }
+
+        double momentOfInertia = 0;
+
+        for (int i = 0; i < vertices.length; i++) {
+
+            Vector2D curr = vertices[i];
+            Vector2D next = i == vertices.length - 1 ? vertices[0] : vertices[i + 1];
+
+            momentOfInertia += triangleMomentOfInertia(curr, next, areas[i] / totalArea * mass);
+
+        }
+
+        return momentOfInertia;
+
+    }
+
+    /**
+     * Computes the moment of inertia of the triangle with vertices at the origin, <code>p</code>, and <code>q</code>
+     * rotating about the axis at the origin perpendicular to the plane of the triangle
+     * @param p the first vertex
+     * @param q the second vertex
+     * @param m the mass of the triangle
+     * @return the moment of inertia of the triangle
+     */
+    private double triangleMomentOfInertia(Vector2D p, Vector2D q, double m) {
+        /*
+         * See https://en.wikipedia.org/wiki/List_of_moments_of_inertia#Moments_of_inertia towards the bottom
+         *
+         * NO DERIVATION ON THAT PAGE!
+         */
+        return 1.0 / 6 * m * (p.dot(p) + p.dot(q) + q.dot(q));
+    }
+
+    /**
+     * Computes the area of the triangle with vertices at the origin, <code>p</code>, and <code>q</code>
+     * @param p the first vertex
+     * @param q the second vertex
+     * @return the area of the triangle
+     */
+    private double areaOfTriangle(Vector2D p, Vector2D q) {
+        double theta = acos(p.dot(q) / p.getMag() / q.getMag());
+
+        return 0.5 * sin(theta) * p.getMag() * q.getMag();
+    }
+
 }
