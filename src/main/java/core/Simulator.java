@@ -21,10 +21,6 @@ public class Simulator extends JPanel {
         this.height = height;
         this.entities = entities;
 
-
-
-
-
         setSize(width, height);
         setVisible(true);
 
