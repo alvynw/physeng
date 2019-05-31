@@ -56,9 +56,7 @@ public class Simulator extends JPanel {
 
                 g2d.setColor(Color.BLACK);
                 g2d.draw(circle2D);
-            }
-            else
-            {
+            } else {
                 g2d.setColor(entity.getColor());
                 g2d.fill(shift(entity.getShape(), entity.getPosition()));
 
@@ -69,3 +67,4 @@ public class Simulator extends JPanel {
         }
     }
 }
+
