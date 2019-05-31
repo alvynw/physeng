@@ -122,8 +122,8 @@ public class ConvexHullTest {
     @Test
     public void intArrPoints()
     {
-        double[] xpoints = {1, 0, 2, 0, 2};
-        double[] ypoints = {1, 0, 2, 2, 0};
+        int[] xpoints = {1, 0, 2, 0, 2};
+        int[] ypoints = {1, 0, 2, 2, 0};
 
         int npoints = xpoints.length;
         Path2D path = ConvexHull.getHull(xpoints, ypoints, npoints);
@@ -140,10 +140,9 @@ public class ConvexHullTest {
     }
 
     @Test
-    public void double2DArray()
-    {
+    public void double2DArray() {
 
-        double[][] arr ={{1.0, 1.0},{0.0, 0.0}, {2.0, 2.0}, {0.0, 2.0}, {2, 0.0}};
+        double[][] arr = {{1.0, 1.0}, {0.0, 0.0}, {2.0, 2.0}, {0.0, 2.0}, {2, 0.0}};
         Path2D path = ConvexHull.getHull(arr);
 
         Vector2D[] vertices = pathVertices(path);
@@ -161,7 +160,7 @@ public class ConvexHullTest {
     @Test
     public void int2DArray()
     {
-        double[][] arr ={{1, 1},{0, 0}, {2, 2}, {0, 2}, {2, 0}};
+        int[][] arr ={{1, 1},{0, 0}, {2, 2}, {0, 2}, {2, 0}};
         Path2D path = ConvexHull.getHull(arr);
 
         Vector2D[] vertices = pathVertices(path);
