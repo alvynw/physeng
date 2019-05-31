@@ -51,7 +51,7 @@ public class EntityTest {
     @Test
     public void momentOfInertiaTest() {
 
-        final double TOLERANCE = 1;
+        final double TOLERANCE = 0.05;
 
         //square
         Square s = new Square(10, 2);
