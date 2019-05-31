@@ -94,7 +94,8 @@ public class Entity {
         this.velocity = new Vector2D(0, 0);
         this.acceleration = new Vector2D(0, 0);
         Path2D shape1 = getHull(shape);
-        this.shape = shift(shape1, com().opposite());
+        this.shape = shift(shape1, com(shape1).opposite());
+        this.momentOfInertia = momentOfInertia();
     }
 
     /**
@@ -323,10 +324,11 @@ public class Entity {
     }
 
     /**
-     * Returns the center of mass of this <code>Entity</code>
+     * Returns the center of mass of this {@link Path2D}
+     * @param shape the {@link Path2D} to find the center of mass of
      * @return the center of mass of this <code>Entity</code>
      */
-    private Vector2D com() {
+    private Vector2D com(Path2D shape) {
 
         /* Developer's note
          *
@@ -339,8 +341,12 @@ public class Entity {
         Vector2D[] points = pathVertices(shape);
 
         double A = 0;
-        for (int i = 0; i < points.length - 1; i++) {
-            A += points[i].getX() * points[i + 1].getY() - points[i + 1].getX() * points[i].getY();
+        for (int i = 0; i < points.length; i++) {
+
+            Vector2D curr = points[i];
+            Vector2D next = i == points.length - 1 ? points[0] : points[i + 1];
+            
+            A += curr.getX() * next.getY() - next.getX() * curr.getY();
         }
 
         A /= 2;
@@ -348,13 +354,17 @@ public class Entity {
         double sumX = 0;
         double sumY = 0;
 
-        for (int i = 0; i < points.length - 1; i++) {
-            sumX += (points[i].getX() + points[i + 1].getX()) * (points[i].getX() * points[i + 1].getY() - points[i + 1].getX() * points[i].getY());
-            sumY += (points[i].getY() + points[i + 1].getY()) * (points[i].getX() * points[i + 1].getY() - points[i + 1].getX() * points[i].getY());;
+        for (int i = 0; i < points.length; i++) {
+
+            Vector2D curr = points[i];
+            Vector2D next = i == points.length - 1 ? points[0] : points[i + 1];
+            
+            sumX += (curr.getX() + next.getX()) * (curr.getX() * next.getY() - next.getX() * curr.getY());
+            sumY += (curr.getY() + next.getY()) * (curr.getX() * next.getY() - next.getX() * curr.getY());
         }
 
-        sumX /= 6 * A;
-        sumY /= 6 * A;
+        sumX = sumX / 6 / A;
+        sumY = sumY / 6 / A;
 
         Vector2D com = new Vector2D(sumX, sumY);
         return com;
@@ -371,7 +381,7 @@ public class Entity {
         double totalArea = 0;
         double[] areas = new double[vertices.length];
 
-        for (int i = 0; i < vertices.length - 1; i++) {
+        for (int i = 0; i < vertices.length; i++) {
 
             Vector2D curr = vertices[i];
             Vector2D next = i == vertices.length - 1 ? vertices[0] : vertices[i + 1];
@@ -382,7 +392,7 @@ public class Entity {
 
         double momentOfInertia = 0;
 
-        for (int i = 0; i < vertices.length - 1; i++) {
+        for (int i = 0; i < vertices.length; i++) {
 
             Vector2D curr = vertices[i];
             Vector2D next = i == vertices.length - 1 ? vertices[0] : vertices[i + 1];
@@ -409,8 +419,7 @@ public class Entity {
          *
          * NO DERIVATION ON THAT PAGE!
          */
-
-        return 1.0 / 6 * mass * (p.dot(p) + p.dot(q) + q.dot(q));
+        return 1.0 / 6 * m * (p.dot(p) + p.dot(q) + q.dot(q));
     }
 
     /**
@@ -421,6 +430,8 @@ public class Entity {
      */
     private double areaOfTriangle(Vector2D p, Vector2D q) {
         double theta = acos(p.dot(q) / p.getMag() / q.getMag());
+
         return 0.5 * sin(theta) * p.getMag() * q.getMag();
     }
+
 }

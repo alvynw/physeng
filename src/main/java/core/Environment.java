@@ -44,8 +44,4 @@ public class Environment {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        Environment e = new Environment();
-        e.simulate();
-    }
 }
