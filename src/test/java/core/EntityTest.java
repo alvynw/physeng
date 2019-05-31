@@ -2,36 +2,33 @@ package core;
 
 import org.junit.Test;
 import physics.Vector2D;
+import shapes.Circle;
+import shapes.Rectangle;
+import shapes.Square;
 
 import java.awt.geom.Path2D;
 
+import static org.junit.Assert.assertEquals;
 import static utils.Path2DTestUtils.assertVector2DEquals;
 import static utils.Path2DUtils.generatePath;
 import static utils.Path2DUtils.pathVertices;
 
 public class EntityTest {
 
-    final double TOLERANCE = 0.001;
-
     @Test
     public void rotationTest() {
+
+        final double TOLERANCE = 0.001;
+
         Vector2D[] vertices = {new Vector2D(0, 0), new Vector2D(2, 0), new Vector2D(2, 2),  new Vector2D(0, 2)};
 
         Path2D asdf = generatePath(vertices);
 
         Vector2D[] asdfpath = pathVertices(asdf);
 
-//        for (int i = 0; i < asdfpath.length; i++) {
-//            System.out.println(asdfpath[i]);
-//        }
-
         Entity e = new Entity(10, asdf);
 
         Vector2D[] path = pathVertices(e.getShape());
-
-//        for (int i = 0; i < path.length; i++) {
-//            System.out.println(path[i]);
-//        }
 
         Vector2D[] expected = {new Vector2D(-1, -1), new Vector2D(1, -1), new Vector2D(1, 1),  new Vector2D(-1, 1)};
 
@@ -49,5 +46,23 @@ public class EntityTest {
             assertVector2DEquals(expectedRotation[i], path[i], TOLERANCE);
         }
 
+    }
+
+    @Test
+    public void momentOfInertiaTest() {
+
+        final double TOLERANCE = 1;
+
+        //square
+        Square s = new Square(10, 2);
+        assertEquals(1.0 / 12 * s.getMass() * (s.getWidth() * s.getWidth() * 2), s.getMomentOfInertia(), TOLERANCE);
+
+        //rectangle
+        Rectangle r = new Rectangle(10, 2, 2);
+        assertEquals(1.0 / 12 * r.getMass() * (r.getWidth() * r.getWidth() + r.getHeight() * r.getHeight()), r.getMomentOfInertia(), TOLERANCE);
+
+        //circle
+        Circle c = new Circle(10, 2);
+        assertEquals(0.5 * c.getMass() * c.getRadius() * c.getRadius(), c.getMomentOfInertia(), TOLERANCE);
     }
 }

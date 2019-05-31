@@ -4,8 +4,6 @@ import java.util.function.Function;
 
 /**
  * Represents a force that follows an {@link core.Entity}. This force always acts on the {@link core.Entity}'s center of mass.
- *
- * @see CenterOfMass
  */
 public class Force {
     private Function<Double, Vector2D> function;
@@ -26,4 +24,5 @@ public class Force {
     public Vector2D apply(Double time) {
         return function.apply(time);
     }
+
 }

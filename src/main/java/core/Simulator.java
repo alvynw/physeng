@@ -1,20 +1,21 @@
 package core;
 
-import physics.Vector2D;
+import shapes.Circle;
+import shapes.Ellipse;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.geom.Path2D;
-import java.util.LinkedList;
+import java.awt.geom.Ellipse2D;
 import java.util.List;
+
 import static utils.Path2DUtils.shift;
 
 public class Simulator extends JPanel {
 
     int width;
     int height;
-    List<Entity> entities = new LinkedList<Entity>();
+    List<Entity> entities;
 
 
     public Simulator(int width, int height, List<Entity> entities) {
@@ -43,32 +44,28 @@ public class Simulator extends JPanel {
 
         super.paintComponent(g);
 
-
         for (int i = 0; i < entities.size(); i++) {
 
             Entity entity = entities.get(i);
-            /*
-
-            Coming soon
-
 
             if (entity instanceof Circle) {
                 Circle circle = (Circle) entity;
+                Ellipse2D circle2D = new Ellipse2D.Double(circle.getPosition().getX() - circle.getRadius(), circle.getPosition().getY() - circle.getRadius(), circle.getHeight(), circle.getHeight());
                 g2d.setColor(circle.getColor());
-                Ellipse2D circle2 = new Ellipse2D.Double(circle.getPosition().getX(), circle.getPosition().getY(), 10, 10);
-                g2d.fill(circle2);
-            }
-            */
+                g2d.fill(circle2D);
 
-//            else
-//            {
+                g2d.setColor(Color.BLACK);
+                g2d.draw(circle2D);
+            }
+            else
+            {
                 g2d.setColor(entity.getColor());
                 g2d.fill(shift(entity.getShape(), entity.getPosition()));
 
                 g2d.setColor(Color.BLACK);
                 g2d.draw(shift(entity.getShape(), entity.getPosition()));
 
-//            }
+            }
         }
     }
 }

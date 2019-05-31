@@ -16,7 +16,7 @@ public class EllipseTest {
         Ellipse test = new Ellipse(10, 5, 6);
         assertNotNull(test);
         assertEquals(5, test.getWidth(), TOLERANCE);
-        assertEquals(5, test.getHeight(), TOLERANCE);
+        assertEquals(6, test.getHeight(), TOLERANCE);
         assertEquals(10, test.getMass(), TOLERANCE);
     }
 
