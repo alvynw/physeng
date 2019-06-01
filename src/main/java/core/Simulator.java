@@ -1,7 +1,8 @@
 package core;
 
+import javafx.util.Pair;
+import physics.Vector2D;
 import shapes.Circle;
-import shapes.Ellipse;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,23 +12,35 @@ import java.util.List;
 
 import static utils.Path2DUtils.shift;
 
-public class Simulator extends JPanel {
+class Simulator extends JPanel {
 
-    int width;
-    int height;
+    private double time = 0;
+    private int width;
+    private int height;
+    private double dt;
+    private int counter = 0;
+
     List<Entity> entities;
 
+    CollisionHandler detector = new CollisionHandler();
 
-    public Simulator(int width, int height, List<Entity> entities) {
+
+    public Simulator(int width, int height, List<Entity> entities, double dt) {
 
         this.width = width;
         this.height = height;
         this.entities = entities;
+        this.dt = dt;
+
+        int counter = 0;
 
         setSize(width, height);
         setVisible(true);
 
         Timer timer = new Timer(33, (ActionEvent actionEvent) -> {
+
+            tick();
+
             repaint();
             //((Timer) actionEvent.getSource()).start();
         });
@@ -36,6 +49,29 @@ public class Simulator extends JPanel {
         repaint();
     }
 
+    public void tick() {
+
+        List<Pair<Entity, Entity>> possibleCollisions = detector.sortAndSweep(entities);
+        for (Pair<Entity, Entity> pair : possibleCollisions) {
+            Vector2D MVT = detector.SAT(pair.getKey(), pair.getValue());
+
+            System.out.println(MVT);
+
+            if (MVT == null) {
+                System.out.println("no collision");
+                continue;
+            } else {
+                detector.resolveCollisions(pair.getKey(), pair.getValue(), MVT);
+            }
+        }
+
+
+        for (Entity e : entities) {
+            e.tick(dt, time);
+        }
+
+        time += dt;
+    }
 
     @Override
     public void paintComponent(Graphics g) {

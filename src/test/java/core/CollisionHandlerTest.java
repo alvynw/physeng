@@ -3,16 +3,18 @@ package core;
 import javafx.util.Pair;
 import org.junit.Test;
 import physics.Vector2D;
+import shapes.Circle;
+import shapes.Square;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class CollisionDetectorTest {
+public class CollisionHandlerTest {
 
     @Test
     public void sortAndSweepTest() {
-        CollisionDetector detector = new CollisionDetector();
+        CollisionHandler detector = new CollisionHandler();
 
 
         ArrayList<Entity> list = new ArrayList<>();
@@ -53,4 +55,25 @@ public class CollisionDetectorTest {
         assertEquals(1, pairs.size());
         assertEquals(pairs.get(0), new Pair<>(e2, e3));
     }
+
+    @Test
+    public void SATTest() {
+        final double TOLERANCE = 0.001;
+
+        CollisionHandler detector = new CollisionHandler();
+        Square s1 = new Square(10, 100);
+        //s1.setInitialPosition(new Vector2D(405, 500));
+        s1.setInitialPosition(new Vector2D(405, 500));
+
+        Square s2 = new Square(10, 100);
+        s2.setInitialPosition(new Vector2D(595, 500));
+
+       System.out.println(detector.SAT(s1, s2));
+       //detector.resolveCollisions(s2, s1, detector.SAT(s2, s1));
+
+    }
+
+
+
+
 }

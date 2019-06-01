@@ -61,6 +61,14 @@ public class Vector2D {
     }
 
     /**
+     * Subracts two <code>Vector2D</code>s and returns the result
+     * @return the difference of <code>that</code> and this
+     */
+    public Vector2D subtract(Vector2D that) {
+        return this.add(that.opposite());
+    }
+
+    /**
      * Returns the current <code>Vector2D</code> scaled by the specified amount
      * @param f the factor to scale by
      * @return the scaled <code>Vector2D</code>
@@ -80,6 +88,15 @@ public class Vector2D {
     public double dot(Vector2D that) {
         return this.x * that.x + this.y * that.y;
     }
+
+    /**
+     * Returns the magnitude of the cross product of two <code>Vector2D</code>s
+     * @param that the <code>Vector2D</code> to take the cross product with
+     * @return the magnitude of the cross product of the two <code>Vector2D</code>s
+     */
+    public double cross(Vector2D that) { return this.x * that.y - this.y * that.x; }
+
+    public Vector2D cross(double scalar) { return new Vector2D(scalar * this.y, -scalar * this.x); }
 
     /**
      * Returns a <code>Vector2D</code> rotated 90 degrees counterclockwise to this <code>Vector2D</code> with the same magnitude.
@@ -103,6 +120,14 @@ public class Vector2D {
      */
     public Vector2D opposite() {
         return new Vector2D(-x, -y);
+    }
+
+    /**
+     * Returns the unit vector of this <code>Vector2D</code>
+     * @return
+     */
+    public Vector2D unit() {
+        return this.scale(1.0 / this.getMag());
     }
 
     /**

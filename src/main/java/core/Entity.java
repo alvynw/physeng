@@ -21,7 +21,7 @@ import static utils.Path2DUtils.*;
  * <ul>
  *     <li>The color of this <code>Entity</code> is randomly assigned.</li>
  *     <li>The position, velocity, acceleration are set to <code>(0,0)</code> in their respective units.</li>
- *     <li>The bearing is set to <code>0</code> degrees</li>
+ *     <li>The bearing is set to <code>0</code> radianss</li>
  * </ul>
  *
  *
@@ -71,14 +71,29 @@ public class Entity {
     private ArrayList<Couple> couples = new ArrayList<>();
 
     /**
+     * List containing linear impulses acting on this <code>Entity</code>
+     */
+    private ArrayList<Vector2D> impulseLinears = new ArrayList<>();
+
+    /**
+     * List containing angular impulses acting on this <code>Entity</code>
+     */
+    private ArrayList<Double> impulseAngulars = new ArrayList<>();
+
+    /**
      * <code>Path2D</code> representing the bounding shape of this <code>Entity</code>
      */
     private Path2D shape;
 
     /**
-     * The orientation of the shape in degrees
+     * The orientation of the shape in radians
      */
-    private double degree = 0;
+    private double radians = 0;
+
+    /**
+     * The 
+     */
+    private double angularVelocity = 0;
 
     /**
      * Creates a new <code>Entity</code> with the specified mass. <br>
@@ -233,11 +248,11 @@ public class Entity {
     }
 
     /**
-     * Returns the degrees the shape has turned relative to 0, the initial orientation of the shape
-     * @return the degrees the shape has turned relative to 0, the initial orientation of the shape
+     * Returns the radianss the shape has turned relative to 0, the initial orientation of the shape
+     * @return the radianss the shape has turned relative to 0, the initial orientation of the shape
      */
     public double getOrientation() {
-        return degree;
+        return radians;
     }
 
     /**
@@ -258,17 +273,17 @@ public class Entity {
      * Sets the velocity of this <code>Entity</code> the specified velocity in meters per second <br>
      * To be used during the initialization process
      *
-     * @param velocity the position to set this <code>Entity</code> to
+     * @param velocity the velocity to set this <code>Entity</code> to
      */
     public void setInitialVelocity(Vector2D velocity) { this.velocity = velocity; }
 
     /**
-     * Sets the velocity of this <code>Entity</code> the specified acceleration in meters per second squared <br>
+     * Sets the velocity of this <code>Entity</code> the specified angular velocity in radians per second <br>
      * To be used during the initialization process
      *
-     * @param acceleration the position to set this <code>Entity</code> to
+     * @param angularVelocity the angular velocity to set this <code>Entity</code> to
      */
-    public void setInitialAcceleration(Vector2D acceleration) { this.acceleration = acceleration; }
+    public void setInitialAngularVelocity(double angularVelocity) { this.angularVelocity = angularVelocity; }
 
     /**
      * Returns the x-y axis aligned bounding box of the shape of this <code>Entity</code>
@@ -308,19 +323,64 @@ public class Entity {
     }
 
     /**
-     * Rotates the entity counterclockwise by the specified degrees <br>
+     * Rotates the entity counterclockwise by the specified radianss <br>
      * The bounding shape of this <code>Entity</code> is rotated by the same amount.
      *
-     * @param degree the amount of degrees to rotate this <code>Entity</code> counterclockwise
+     * @param radians the amount of radianss to rotate this <code>Entity</code> counterclockwise
      */
-    public void rotate(double degree) {
-        this.degree += degree;
-        this.degree %= 360;
+    public void rotate(double radians) {
+        this.radians += radians;
+        this.radians %= 2 * PI;
 
         AffineTransform transform = new AffineTransform();
-        transform.rotate(degree * Math.PI / 180);
+        transform.rotate(radians);
 
         shape.transform(transform);
+    }
+
+    /**
+     * Adds a linear impulses acting on this <code>Entity</code>
+     * @param impulseLinear the impulse to add
+     */
+    public void addImpulseLinear(Vector2D impulseLinear) {
+        impulseLinears.add(impulseLinear);
+    }
+
+    /**
+     * Adds a angular impulses acting on this <code>Entity</code>
+     * @param impulseAngular the impulse to add
+     */
+    public void addImpulseAngular(double impulseAngular) {
+        impulseAngulars.add(impulseAngular);
+    }
+
+    /**
+     * Simulates a timestep on this <code>Entity</code> at the given time
+     * @param dt the timestep
+     * @param t the time
+     */
+    public void tick(double dt, double t) {
+
+        for (Force f : forces) {
+            velocity = velocity.add(f.apply(t).scale(dt / mass));
+        }
+
+        for (Couple c : couples) {
+            angularVelocity += c.apply(t) / momentOfInertia;
+        }
+
+        for (Vector2D impulseLinear : impulseLinears) {
+            velocity = velocity.add(impulseLinear.scale( 1 / mass));
+        }
+        impulseLinears.clear();
+
+        for (Double impulseAngular : impulseAngulars) {
+            angularVelocity += impulseAngular / momentOfInertia;
+        }
+        impulseAngulars.clear();
+
+        position = position.add(velocity.scale(dt));
+        rotate(angularVelocity * dt);
     }
 
     /**
