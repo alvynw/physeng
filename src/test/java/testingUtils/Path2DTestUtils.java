@@ -1,4 +1,4 @@
-package utils;
+package testingUtils;
 
 import physics.Vector2D;
 

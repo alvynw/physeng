@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import physics.Vector2D;
 
-import static utils.Path2DTestUtils.assertVector2DEquals;
+import static testingUtils.Path2DTestUtils.assertVector2DEquals;
 import static utils.Path2DUtils.pathVertices;
 
 import java.awt.*;
@@ -94,6 +94,23 @@ public class ConvexHullTest {
             assertVector2DEquals(vertices[i], expected[i], TOLERANCE);
         }
     }
+    @Test
+    public void doubleArrExceptions()
+    {
+        double[] xpoints = {1.0, 0.0, 2.0, 0.0, 2.0};
+        double[] ypoints = {1.0, 0.0, 2.0, 2.0, 0.0};
+
+        int npoints = 4;
+        expectedEx.expect(IllegalArgumentException.class);
+        expectedEx.expectMessage("xpoints and ypoints must be of equal length and must be equal to npoints");
+        Path2D path = ConvexHull.getHull(xpoints, ypoints, npoints);
+
+        int smallNPoints = 1;
+        expectedEx.expect(IllegalArgumentException.class);
+        expectedEx.expectMessage("Must have over 2 non-collinear points! Lines are not supported. " +
+                "To create a line, use a thin rectangle");
+        Path2D path2 = ConvexHull.getHull(xpoints, ypoints, smallNPoints);
+    }
 
     @Test
     public void vectorTest()
@@ -122,8 +139,8 @@ public class ConvexHullTest {
     @Test
     public void intArrPoints()
     {
-        double[] xpoints = {1, 0, 2, 0, 2};
-        double[] ypoints = {1, 0, 2, 2, 0};
+        int[] xpoints = {1, 0, 2, 0, 2};
+        int[] ypoints = {1, 0, 2, 2, 0};
 
         int npoints = xpoints.length;
         Path2D path = ConvexHull.getHull(xpoints, ypoints, npoints);
@@ -140,10 +157,21 @@ public class ConvexHullTest {
     }
 
     @Test
-    public void double2DArray()
+    public void intArrExceptions()
     {
+        int[] xpoints = {1, 0, 2, 0, 2};
+        int[] ypoints = {1, 0, 2, 2, 0};
 
-        double[][] arr ={{1.0, 1.0},{0.0, 0.0}, {2.0, 2.0}, {0.0, 2.0}, {2, 0.0}};
+        int npoints = 4;
+        expectedEx.expect(IllegalArgumentException.class);
+        expectedEx.expectMessage("npoints must be equal to the size of xpoints and ypoints");
+        Path2D path = ConvexHull.getHull(xpoints, ypoints, npoints);
+    }
+
+    @Test
+    public void double2DArray() {
+
+        double[][] arr = {{1.0, 1.0}, {0.0, 0.0}, {2.0, 2.0}, {0.0, 2.0}, {2, 0.0}};
         Path2D path = ConvexHull.getHull(arr);
 
         Vector2D[] vertices = pathVertices(path);
@@ -159,9 +187,19 @@ public class ConvexHullTest {
     }
 
     @Test
+    public void d2DArrayException()
+    {
+        double[][] arr = {{1.0, 1.0, 1.0}, {0.0, 0.0}, {2.0, 2.0}, {0.0, 2.0}, {2, 0.0}};
+
+        expectedEx.expect(IllegalArgumentException.class);
+        expectedEx.expectMessage("points must be of the shape double[n][2]");
+        Path2D path = ConvexHull.getHull(arr);
+    }
+
+    @Test
     public void int2DArray()
     {
-        double[][] arr ={{1, 1},{0, 0}, {2, 2}, {0, 2}, {2, 0}};
+        int[][] arr ={{1, 1},{0, 0}, {2, 2}, {0, 2}, {2, 0}};
         Path2D path = ConvexHull.getHull(arr);
 
         Vector2D[] vertices = pathVertices(path);
@@ -174,6 +212,16 @@ public class ConvexHullTest {
         for (int i = 0; i < expected.length; i++) {
             assertVector2DEquals(vertices[i], expected[i], TOLERANCE);
         }
+    }
+
+    @Test
+    public void i2DArrayException()
+    {
+        int[][] arr ={{1, 1, 1},{0, 0}, {2, 2}, {0, 2}, {2, 0}};
+
+        expectedEx.expect(IllegalArgumentException.class);
+        expectedEx.expectMessage("points must be of the shape int[n][2]");
+        Path2D path = ConvexHull.getHull(arr);
     }
 
     @Test
