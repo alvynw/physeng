@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import physics.Vector2D;
 
-import static utils.Path2DTestUtils.assertVector2DEquals;
+import static Path2DTest.Path2DTestUtils.assertVector2DEquals;
 import static utils.Path2DUtils.pathVertices;
 
 import java.awt.*;

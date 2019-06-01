@@ -3,10 +3,8 @@ package physics;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Vector;
-
+import static Path2DTest.Path2DTestUtils.assertVector2DEquals;
 import static org.junit.Assert.*;
-import static utils.Path2DTestUtils.assertVector2DEquals;
 
 public class Vector2DTest {
 

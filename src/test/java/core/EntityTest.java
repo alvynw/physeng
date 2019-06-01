@@ -1,7 +1,6 @@
 package core;
 
 import org.junit.Test;
-import physics.Force;
 import physics.Vector2D;
 import shapes.Circle;
 import shapes.Rectangle;
@@ -10,9 +9,9 @@ import shapes.Square;
 import java.awt.*;
 import java.awt.geom.Path2D;
 
+import static Path2DTest.Path2DTestUtils.assertVector2DEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static utils.Path2DTestUtils.assertVector2DEquals;
 import static utils.Path2DUtils.generatePath;
 import static utils.Path2DUtils.pathVertices;
 
