@@ -3,7 +3,7 @@ package physics;
 import org.junit.Test;
 import shapes.Circle;
 
-import static utils.Path2DTestUtils.assertVector2DEquals;
+import static testingUtils.Path2DTestUtils.assertVector2DEquals;
 
 public class UniformFieldTest {
 

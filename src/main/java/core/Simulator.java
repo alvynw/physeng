@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.util.List;
 
 import static utils.Path2DUtils.shift;
@@ -92,7 +93,8 @@ class Simulator extends JPanel {
 
                 g2d.setColor(Color.BLACK);
                 g2d.draw(circle2D);
-            } else {
+            }
+            else {
                 g2d.setColor(entity.getColor());
                 g2d.fill(shift(entity.getShape(), entity.getPosition()));
 
