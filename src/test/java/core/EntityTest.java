@@ -81,19 +81,24 @@ public class EntityTest {
         path.closePath();
 
         Entity entity = new Entity(mass, path);
+
         Path2D result = entity.getShape();
 
+
         Vector2D[] vertices = pathVertices(result);
+
         Vector2D[] expected = {
-                new Vector2D(0, 0),
-                new Vector2D(200, 0),
-                new Vector2D(200, 200),
-                new Vector2D(0,200)};
+                new Vector2D(-100, -100),
+                new Vector2D(100, -100),
+                new Vector2D(100, 100),
+                new Vector2D(-100,100)};
 
         for (int i = 0; i < expected.length; i++) {
-            assertVector2DEquals(vertices[i], expected[i], TOLERANCE);
+            assertVector2DEquals(expected[i], vertices[i], TOLERANCE);
         }
+
     }
+
 
     @Test
     public void massTest()
