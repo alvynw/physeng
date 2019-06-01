@@ -1,4 +1,4 @@
-package Path2DTest;
+package testingUtils;
 
 import physics.Vector2D;
 

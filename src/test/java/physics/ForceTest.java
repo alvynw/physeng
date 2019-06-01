@@ -2,7 +2,7 @@ package physics;
 
 import org.junit.Test;
 
-import static Path2DTest.Path2DTestUtils.assertVector2DEquals;
+import static testingUtils.Path2DTestUtils.assertVector2DEquals;
 
 public class ForceTest {
 
