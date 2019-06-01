@@ -3,7 +3,7 @@ package physics;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static Path2DTest.Path2DTestUtils.assertVector2DEquals;
+import static testingUtils.Path2DTestUtils.assertVector2DEquals;
 import static org.junit.Assert.*;
 
 public class Vector2DTest {

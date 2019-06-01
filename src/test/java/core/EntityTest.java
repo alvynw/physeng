@@ -9,7 +9,7 @@ import shapes.Square;
 import java.awt.*;
 import java.awt.geom.Path2D;
 
-import static Path2DTest.Path2DTestUtils.assertVector2DEquals;
+import static testingUtils.Path2DTestUtils.assertVector2DEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static utils.Path2DUtils.generatePath;
