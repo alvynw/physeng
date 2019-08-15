@@ -155,25 +155,25 @@ public class EntityTest {
         assertVector2DEquals(expected, velocity, TOLERANCE);
     }
 
-    @Test
-    public void accelerationTest()
-    {
-        double mass = 10.0;
-        Path2D path = new Path2D.Double();
-        path.moveTo(0, 0);
-        path.lineTo(200, 0);
-        path.lineTo(200, 200);
-        path.lineTo(0, 200);
-        path.closePath();
-
-        Entity entity = new Entity(mass, path);
-        entity.setInitialAcceleration(new Vector2D(5, 10));
-        Vector2D acc = entity.getAcceleration();
-
-        Vector2D expected = new Vector2D(5, 10);
-
-        assertVector2DEquals(expected, acc, TOLERANCE);
-    }
+//    @Test
+//    public void accelerationTest()
+//    {
+//        double mass = 10.0;
+//        Path2D path = new Path2D.Double();
+//        path.moveTo(0, 0);
+//        path.lineTo(200, 0);
+//        path.lineTo(200, 200);
+//        path.lineTo(0, 200);
+//        path.closePath();
+//
+//        Entity entity = new Entity(mass, path);
+//        entity.setInitialAcceleration(new Vector2D(5, 10));
+//        Vector2D acc = entity.getAcceleration();
+//
+//        Vector2D expected = new Vector2D(5, 10);
+//
+//        assertVector2DEquals(expected, acc, TOLERANCE);
+//    }
 
     @Test
     public void colorTest()

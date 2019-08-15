@@ -3,7 +3,6 @@ package core;
 import javafx.util.Pair;
 import physics.Vector2D;
 
-import javax.xml.ws.soap.MTOM;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
